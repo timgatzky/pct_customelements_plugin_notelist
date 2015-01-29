@@ -9,13 +9,13 @@
 <?php foreach($this->entries as $entry): ?>
 <?php echo $entry['amount']; ?>x
 <?php foreach($entry['fields'] as $field):?>
-<?php echo $field->value(); ?>
+<?php echo $field->label; ?>
 <?php endforeach; ?>
 <?php if(count($entry['variants']) > 0): ?>
 
 (<?php foreach($entry['variants'] as $name => $data): ?>
-<?php if(count($data['value']) > 0): ?>
-<?php echo implode(',',$data['value']); ?>
+<?php if($data['value']): ?>
+<?php echo $data['value']; ?>
 <?php endif; ?>
 <?php endforeach; ?>)
 <?php endif; ?>

@@ -77,6 +77,6 @@ array_insert($GLOBALS['TL_FFL'],count($GLOBALS['TL_FFL']),array
 /**
  * Hooks
  */
-#$GLOBALS['TL_HOOKS']['replaceInsertTags'][] 		= array('MetaModelNotelist', 'replaceTags'); 
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] 		= array('\PCT\CustomElements\Plugins\Notelist\Notelist', 'replaceTags'); 
 
 

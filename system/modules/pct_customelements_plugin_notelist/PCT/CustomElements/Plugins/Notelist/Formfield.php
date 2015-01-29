@@ -103,7 +103,7 @@ class Formfield extends \Widget
 	 * @param boolean
 	 * @return string
 	 */
-	protected function render($blnFormMail=false)
+	protected function render($bolFormMail=false)
 	{
 		if(strlen($this->customelements_notelist_source) < 1 )
 		{
@@ -136,7 +136,7 @@ class Formfield extends \Widget
 		
 		// prepare template for regular FE output
 		$arrTmp = array();
-		if(!$blnFormMail)
+		if(!$bolFormMail)
 		{
 			//-- submits
 			$objTemplate->submit = $GLOBALS['TL_LANG']['metamodels_notelist']['submitLabel'];
@@ -291,12 +291,12 @@ class Formfield extends \Widget
 						// collect variants
 						$arrTemplateVariants[$strName] = array
 						(
-							'id'	=> $objVariantAttr->get('id'),
-							'html'	=> $objWidget->generate(),
-							'raw'	=> $objWidget,
-							'value'	=> $arrAttribute['value'],
+							'id'		=> $objVariantAttr->get('id'),
+							'widget'	=> $objWidget,
+							'value'		=> $arrAttribute['value'],
 							'attribute' => $objVariantAttr,
 						);
+
 					}
 					
 					$entry['variants'] = $arrTemplateVariants;
@@ -315,17 +315,14 @@ class Formfield extends \Widget
 		$strBuffer = $objTemplate->parse();
 		$strBuffer = $this->replaceInsertTags($strBuffer);
 		
-		if($blnFormMail)
+		if($bolFormMail)
 		{
 			$objString = \String::getInstance();
-			$strBuffer = trim($objString->toXhtml($strBuffer));
 			$strBuffer = str_replace("\t", " ", $strBuffer);;
-			
 			#$strBuffer = $objString->decodeEntities(trim($strBuffer)); 
 			$strBuffer = trim(preg_replace('/\.$/m', ' ', $strBuffer));
 			#$strBuffer = trim(preg_replace('/\s\s+/', ' ', $strBuffer));
 			#$strBuffer = trim(preg_replace('{(.)\1+}', '$1', $strBuffer));
-			
 		}
 		
 		return $strBuffer;

@@ -39,12 +39,12 @@ class TableHelper extends \Contao\Backend
 			{
 				if($objCEs->isCTE)
 				{
-					$arrReturn['ce::tl_content::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.']';
+					$arrReturn['ce::tl_content::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.'] (content)';
 				}
 				
 				if($objCEs->isFMD)
 				{
-					$arrReturn['ce::tl_module::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.']';
+					$arrReturn['ce::tl_module::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.'] (module)';
 				}
 				
 				// fetch customcatalogs

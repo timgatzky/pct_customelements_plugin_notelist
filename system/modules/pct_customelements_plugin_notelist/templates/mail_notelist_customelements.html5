@@ -1,0 +1,26 @@
+<?php
+/**
+ * Template for customelements notelist email output
+ */
+?>
+
+
+<?php if(count($this->entries) > 0): ?>
+<?php foreach($this->entries as $entry): ?>
+<?php echo $entry['amount']; ?>x
+<?php foreach($entry['fields'] as $field):?>
+<?php echo $field->value(); ?>
+<?php endforeach; ?>
+<?php if(count($entry['variants']) > 0): ?>
+
+(<?php foreach($entry['variants'] as $name => $data): ?>
+<?php if(count($data['value']) > 0): ?>
+<?php echo implode(',',$data['value']); ?>
+<?php endif; ?>
+<?php endforeach; ?>)
+<?php endif; ?>
+
+<?php endforeach; ?>
+<?php else: ?>
+<?php echo $this->empty; ?>
+<?php endif; ?>

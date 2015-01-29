@@ -1,0 +1,37 @@
+<?php
+/**
+ * MetaModel notelist frontend template
+ */
+?>
+<?php if(!$this->includeNotelist) return ''; ?>
+
+<div class="customelements_notelist notelist">
+<?php if($this->statusMessage): ?>
+<p class="info"><?php echo $this->statusMessage; ?></p>
+<?php endif; ?>
+
+<form method="post" id="<?php echo $this->formID; ?>" action="<?php echo $this->action; ?>">	
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formID; ?>" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+<input type="hidden" name="ITEM_ID" value="<?php echo $this->itemID; ?>" />
+<input type="hidden" name="SOURCE" value="<?php echo $this->source; ?>" />
+<div class="notelistamount input_container">
+	<?php echo $this->amountLabel; ?><?php echo $this->amountInput; ?>
+</div>
+<?php if(count($this->variants) > 0): ?>
+<div class="notelistvariants">
+	<?php foreach($this->variants as $name => $widget): ?>
+	<?php echo $widget['html']; ?>
+	<?php endforeach; ?>
+</div>
+<?php endif; ?>
+<div class="submit_container">
+	<?php if(!$this->added): ?>
+	<input type="submit" class="submit add" name="<?php echo $this->submitName; ?>" value="<?php echo $this->submit; ?>" />
+	<?php else: ?>
+	<input type="submit" class="submit update" name="<?php echo $this->updateName; ?>" value="<?php echo $this->update; ?>">		
+	<input type="submit" class="submit remove" name="<?php echo $this->removeName; ?>" value="<?php echo $this->remove; ?>">
+	<?php endif; ?>
+</div>
+</form>
+</div>

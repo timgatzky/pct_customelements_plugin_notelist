@@ -1,0 +1,411 @@
+<?php
+
+/**
+ * Contao Open Source CMS
+ * 
+ * Copyright (C) 2005-2013 Leo Feyer
+ * 
+ * @copyright	Tim Gatzky 2015
+ * @author		Tim Gatzky <info@tim-gatzky.de>
+ * @package		pct_customelements_plugin_notelist
+ * @link		http://contao.org
+ * @license     LGPL
+ */
+
+/**
+ * Namespace
+ */
+namespace PCT\CustomElements\Plugins\Notelist;
+
+
+/**
+ * Imports
+ */
+use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
+use \PCT\CustomElements\Plugins\CustomCatalog\Core\CustomCatalogFactory as CustomCatalogFactory;
+use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
+
+
+/**
+ * Class file
+ * Notelist
+ */
+class Notelist extends \Contao\Frontend
+{
+	/**
+	 * Session node
+	 * @var string
+	 */
+	protected $strSession	= 'customelementnotelist';
+	
+	/**
+	 * Current object instance (Singleton)
+	 * @var object
+	 */
+	protected static $objInstance;
+
+	/**
+	 * Instantiate this class and return it (Factory)
+	 * @return object
+	 * @throws Exception
+	 */
+	public static function getInstance()
+	{
+		if (!is_object(self::$objInstance))
+		{
+			self::$objInstance = new self();
+		}
+		return self::$objInstance;
+	}
+		
+	
+	/**
+	 * Insert/update an item in the notelist
+	 * @param integer
+	 * @param integer
+	 * @param integer
+	 * @param array
+	 * @param boolean
+	 */
+	public function setItem($varSource,$intItem,$intAmount=0,$arrVariants=array(),$blnReload=true,$arrEntry=array())
+	{
+		// get Session
+		$objSession = \Session::getInstance();
+		$arrSession = $objSession->get($this->strSession);
+		
+		$time = time();
+		
+		$arrSession[$varSource][$intItem] = array
+		(
+			'tstamp'	=> $time,
+			'source'	=> $varSource,
+			'item_id'	=> $intItem,
+			'attr_id'	=> $arrEntry['attr_id'],
+			'amount'	=> ($intAmount < 0 || !$intAmount ? 0 : $intAmount),
+			'variants'	=> $arrVariants,
+		);
+		
+		// HOOK allow other extensions to manipulate the session
+		$arrSession =  Hooks::getInstance()->callSetItemHook($arrSession,$varSource,$intItem,$intAmount,$arrVariants);
+		
+		// set Session
+		$objSession->set($this->strSession,$arrSession);
+		
+		if($blnReload)
+		{
+			// reload the page to see changes	
+			$this->reload();
+		}
+	}
+	
+	
+	/**
+	 * Get an item from the notelist and return as array
+	 * @param integer
+	 * @param integer
+	 * @return array
+	 */
+	public function getItem($varSource,$intItem)
+	{
+		// get Session
+		$arrSession = \Session::getInstance()->get($this->strSession);
+		return $arrSession[$varSource][$intItem];
+	}
+	
+	
+	/**
+	 * Remove an item from notelist
+	 * @param integer
+	 * @param integer
+	 * @param boolean
+	 */
+	public function removeItem($varSource,$intItem,$blnReload=true)
+	{
+		// get Session
+		$objSession = \Session::getInstance();
+		$arrSession = $objSession->get($this->strSession);
+		
+		unset($arrSession[$varSource][$intItem]);
+		
+		// HOOK tell other extensions an item has been removed
+		Hooks::getInstance()->callRemoveItemHook($arrSession,$varSource,$intItem);
+		
+		// set Session
+		$objSession->set($this->strSession,$arrSession);
+		
+		if($blnReload)
+		{
+			// reload the page to see changes	
+			$this->reload();
+		}
+	}
+	
+		
+	/**
+	 * Get all items from current notelist and return as array
+	 * @param integer
+	 * @return array
+	 */
+	public function getNotelist($varSource=null)
+	{
+		// Session
+		$objSession = \Session::getInstance();
+		$arrSession = $objSession->get($this->strSession);
+		
+		if(!is_array($arrSession) || count($arrSession) < 1 )
+		{
+			return array();
+		}
+		
+		// set to a certain notelist node
+		if(!empty($varSource) && count($arrSession[$varSource]) > 0)
+		{
+			$arrSession = $arrSession[$varSource];
+		}
+		
+		// clean out notelist session
+		$arrReturn = array();
+		foreach($arrSession as $id => $entries)
+		{
+			if(count($entries) < 1)
+			{
+				continue;
+			}
+			$arrReturn[$id] = $entries;
+		}
+		
+		return $arrReturn;
+	}
+	
+	
+	/**
+	 * Returns true if an element is already in the notelist
+	 * @param integer
+	 * @param integer
+	 * @return boolean
+	 */
+	public function isInNotelist($varSource, $intItem)
+	{
+		$arrNotelist = $this->getNotelist();
+		
+		if(isset($arrNotelist[$varSource][$intItem]) && count($arrNotelist[$varSource][$intItem]) > 0)
+		{
+			return true;
+		}
+				
+		return false;
+	}
+	
+	
+	/**
+	 * Replace Inserttags
+	 * @param string
+	 * @return string or boolean
+	 */
+	public function replaceTags($strTag)
+	{
+		$strValue = '';
+		$element = explode('::', $strTag);
+
+		switch($element[0])
+		{
+			case 'form':
+				$strValue = \Input::post($element[1]);
+				
+				// fallback
+				if(strlen($strValue) < 1)
+				{
+					$strValue = $_POST[$element[1]];
+				}
+				
+				return $strValue;
+				
+			break;
+			
+			default: return false; break;
+		}
+
+
+		return false;
+	}
+
+	
+	/**
+	 * Add the notelist form to a template
+	 *
+	 */
+	public function addNotelistToTemplate(\FrontendTemplate $objTemplate, \stdClass $objConfig)
+	{
+		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
+		
+		$objInput = \Input::getInstance();
+		
+		$strSource = $objConfig->source;
+		
+		// attribute object
+		$objAttr = $objConfig->attribute;
+		
+		// record
+		$arrRow = $objAttr->get('objActiveRecord')->row();
+		
+		#$objNotelistTemplate = new \FrontendTemplate($objConfig->template);
+		$objTemplate->includeNotelist = true;
+		
+		$strFormID = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$strSource,$arrRow['id'],$objAttr->get('id'));
+		
+		$objTemplate->action = $this->replaceInsertTags('{{env::request}}');
+		$objTemplate->formID = $strFormID;
+		$objTemplate->itemID = $arrRow['id'];
+		$objTemplate->source = $strSource;
+		
+		//-- submits
+		$objTemplate->submit = $GLOBALS['TL_LANG']['customelements_notelist']['submitLabel'];
+		$objTemplate->submitName = $strFormID.'_add'; #'ADD_NOTELIST_ITEM';
+		$objTemplate->update = $GLOBALS['TL_LANG']['customelements_notelist']['updateLabel'];
+		$objTemplate->updateName = $strFormID.'_update'; #'UPDATE_NOTELIST_ITEM';
+		$objTemplate->remove = $GLOBALS['TL_LANG']['customelements_notelist']['removeLabel'];
+		$objTemplate->removeName = $strFormID.'_remove'; #'REMOVE_NOTELIST_ITEM';
+		
+		// get item from notelist and set amount value
+		$arrItem = $this->getItem($strSource,$arrRow['id']);
+		$amount = ($arrItem['amount'] ? $arrItem['amount'] : $GLOBALS['customelements_notelist']['default_amount']);
+		if(\Input::post($strFormID.'_amount'))
+		{
+			$amount = \Input::post($strFormID.'_amount');
+		}
+		
+		// create amount widget
+		$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
+		$objWidgetAmount = new \FormTextField($this->prepareForWidget($arrData, $strFormID.'_amount', $amount, $strFormID.'_amount'));	
+		
+		$objTemplate->amountInput = $objWidgetAmount->generate();
+		$objTemplate->amountLabel = sprintf('<label for="ctrl_%s">%s</label>',$objWidgetAmount->id,$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
+		
+		//-- variants
+		$arrVariants = array();
+		if($objAttr->get('allowNotelistVariants') > 0 && !empty($objAttr->get('notelistVariants')))
+		{
+			$arrTemplateVariants = array();
+			
+			$arrNotelistVariants = deserialize($objAttr->get('notelistVariants'));
+			if(!is_array($arrNotelistVariants))
+			{
+				$arrNotelistVariants = array($arrNotelistVariants);
+			}
+			
+			foreach($arrNotelistVariants as $intVariantAttrId)
+			{
+				$objVariantAttr = \PCT\CustomElements\Core\AttributeFactory::findById($intVariantAttrId);
+				if(!$objVariantAttr)
+				{
+					continue;
+				}
+				
+				$objVariantAttr->generate();
+				$objVariantAttr->set('objActiveRecord',$objAttr->get('objActiveRecord'));
+				$objVariantAttr->set('objOrigin',$objAttr->get('objOrigin'));
+				
+				$strName = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$strSource,$arrRow['id'],$objVariantAttr->get('alias'));				
+				
+				// generate widget
+				$arrFieldDef = array
+				(
+					'id'		=> $strSource.'_'.$arrRow['id'].'_'.$objVariantAttr->get('id'),
+					'attr_id'	=> $objVariantAttr->get('id'),
+					'item_id'	=> $arrRow['id'],
+					'name'		=> $strName,
+					'value'		=> $arrItem['variants'][$strName]['value'],
+					'source'	=> $strSource,
+				);
+				
+				$arrFieldDef = array_merge($objVariantAttr->getFieldDefinition(),$arrFieldDef);
+				
+				$objWidget = \PCT\CustomElements\Plugins\Notelist\Variants::getInstance()->loadFormField($arrFieldDef,$objVariantAttr);
+				if(!$objWidget)
+				{
+					continue;
+				}
+				
+				// collect variants
+				$arrTemplateVariants[$strName] = array
+				(
+					'id'	=> $objVariantAttr->get('id'),
+					'html'	=> $objWidget->generate(),
+					'raw'	=> $objWidget,
+					'attribute' => $objVariantAttr,
+				);
+				
+				// check if a variant field is submitted and store in array
+				if($objInput->post('FORM_SUBMIT') == $strFormID && $objInput->post($objWidget->name))
+				{
+					$arrVariants[$strName] = array
+					(
+						'id'		=> $objVariantAttr->get('id'),
+						'name' 		=> $objVariantAttr->get('alias'),
+						'value'		=> $objInput->post($objWidget->name),
+					);
+				}
+			}
+			
+			// add variants fields to template
+			$objTemplate->variants = $arrTemplateVariants;
+		}
+		
+		//-- form submits
+		if($objInput->post('FORM_SUBMIT') == $strFormID)
+		{
+			$intAmount = $objInput->post($strFormID.'_amount');
+			$intItem = $objInput->post('ITEM_ID');
+			$strSource = $objInput->post('SOURCE');
+			
+			// insert or update an item
+			if( strlen($objInput->post($objTemplate->submitName)) > 0 || strlen($objInput->post($objTemplate->updateName)) > 0 )
+			{
+				// validate amount
+				$objWidgetAmount->validate();
+				if($objWidgetAmount->hasErrors())
+				{
+					$objTemplate->statusMessage = $objWidgetAmount->getErrorAsString(0);
+				}
+				else
+				{
+					// toggle status message
+					if(strlen($objInput->post($objTemplate->updateName)) > 0)	
+					{
+						$objTemplate->statusMessage = $GLOBALS['TL_LANG']['customelements_notelist']['itemUpdated'];
+						
+						// reload if variants where updated
+						#if(count($arrVariants) > 0)
+						#{
+						#	$blnReload = true;
+						#}
+					}
+					else 
+					{
+						$objTemplate->statusMessage = $GLOBALS['TL_LANG']['customelements_notelist']['itemAdded'];
+					}
+				
+					// set the notelist
+					$this->setItem($strSource,$intItem,$intAmount,$arrVariants,$blnReload,array('attr_id'=>$objAttr->get('id')));
+				}
+			}
+			// remove an item and reload the page immediately
+			else if(strlen($objTemplate->removeName) > 0)
+			{
+				$this->removeItem($strSource,$intItem);
+			}
+			else {}
+		}
+				
+		// mark item as being added
+		if($arrItem['amount'])
+		{
+			$objTemplate->added = true;
+		}
+		
+		return $objTemplate->parse();
+	}
+	
+	
+	
+}

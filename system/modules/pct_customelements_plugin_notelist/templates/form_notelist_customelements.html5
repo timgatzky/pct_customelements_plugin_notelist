@@ -1,0 +1,46 @@
+<?php
+/**
+ * Template for customelements notelist form field
+ */
+?>
+
+<?php if(count($this->entries) > 0): ?>
+
+<div class="customelements_notelist notelist formnotelist">	
+
+<?php foreach($this->entries as $entry): ?>
+<div class="item <?php echo $entry['class']; ?>">
+
+	<?php if($entry['statusMessage']): ?>
+	<p class="info"><?php echo $entry['statusMessage']; ?></p>
+	<?php endif; ?>
+
+	<div class="field_container">
+	<?php foreach($entry['fields'] as $field):?>
+		<div class="field <?php echo $field->label; ?>">
+			<span class="label"><?php echo $field->label; ?></span>
+			<span class="value"><?php echo $field->html(); ?></span>
+		</div>
+	<?php endforeach; ?>
+	</div>
+	<?php if(count($entry['variants']) > 0): ?>
+	<div class="notelistvariants">
+		<?php foreach($entry['variants'] as $name => $variant): ?>
+		<?php echo $variant['widget']->generate(); ?>
+		<?php endforeach; ?>
+	</div>
+	<?php endif; ?>
+	<div class="input_container notelistamount">
+		<?php echo $entry['label_amount']; ?><?php echo $entry['input_amount']; ?>
+	</div>
+	<div class="submit_container">
+		<?php echo $entry['input_update']; ?>
+		<?php echo $entry['input_remove']; ?>
+	</div>
+</div>
+<?php endforeach; ?>
+</div>
+
+<?php else: ?>
+<p class="info empty"><?php echo $this->empty; ?></p>
+<?php endif; ?>

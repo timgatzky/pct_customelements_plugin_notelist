@@ -31,7 +31,7 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
  * Stop here if CE Version is to low or notelist is not active
  */
 $objPluginFactory = new \PCT\CustomElements\Core\PluginFactory();
-if(!in_array('notelist',$objPluginFactory::getActivePlugins()) )
+if(!in_array('notelist',$objPluginFactory::getActivePlugins()) && \Input::get('do') != 'repository_manager' )
 {
 	return;
 }

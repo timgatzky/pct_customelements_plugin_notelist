@@ -31,6 +31,15 @@ $GLOBALS['TL_DCA']['tl_pct_customelement_attribute']['palettes'][$strType] = $ob
  */
 $objDcaHelper->addSubpalette('allowNotelistVariants',array('notelistVariants'));
 
+if($objDcaHelper->getActiveRecord()->type == $strType)
+{
+	if(\Input::get('act') == 'edit' && \Input::get('table') == $objDcaHelper->getTable())
+	{
+		// Show template info
+		\Message::addInfo(sprintf($GLOBALS['TL_LANG']['PCT_CUSTOMCATALOG']['MSC']['templateInfo_attribute'], 'customcatalog_attr_notelist'));
+	}
+}
+
 /**
  * Fields
  */

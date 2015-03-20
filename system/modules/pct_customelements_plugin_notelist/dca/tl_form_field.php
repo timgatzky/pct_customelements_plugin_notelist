@@ -24,6 +24,7 @@ $strType = 'customelements_notelist';
  * Palettes
  */
 $arrPalettes = $objDcaHelper->getPalettesAsArray('default');
+$arrPalettes['type_legend'][] = 'name';
 $arrPalettes['type_legend'][] = 'label';
 $arrPalettes['settings_legend'] = array('customelements_notelist_source','customelements_notelist_visibles');
 $arrPalettes['template_legend'] = array('customelements_notelist_formTpl','customelements_notelist_mailTpl');

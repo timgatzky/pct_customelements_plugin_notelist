@@ -58,7 +58,8 @@ class Formfield extends \Widget
 		switch ($strKey)
 		{
 			case 'value':
-				$this->render(true);
+			case 'varValue':
+				return $this->render(true);
 				break;
 			default:
 				return parent::__get($strKey);
@@ -418,13 +419,11 @@ class Formfield extends \Widget
 				$objNotelist->removeItem($entry['source'],$entry['item_id']);
 			}
 			else{}
-			
 		}
 		
-		
+		return $this->render(true);
 	}
 
-	
 	
 	/**
 	 * Fetch the data from a metamodel and return a prepared array

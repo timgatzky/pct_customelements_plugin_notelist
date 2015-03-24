@@ -33,14 +33,25 @@ class Notelist extends \PCT\CustomElements\Filter
 	public function getQueryOptionCallback()
 	{
 		$objNotelist = new \PCT\CustomElements\Plugins\Notelist\Notelist();
-		
 		$arrNotelist = $objNotelist->getNotelist($this->getTable());
+		
+		$objModule = $this->getCustomCatalog()->getOrigin();
+		
 		if(count($arrNotelist) < 1)
 		{
-			return array();
+			if($objModule->customcatalog_filter_showAll)
+			{
+				return array();
+			}
+			else
+			{
+				$arrIds = array(-1);
+			}
 		}
-		
-		$arrIds = array_keys($arrNotelist);
+		else
+		{
+			$arrIds = array_keys($arrNotelist);
+		}
 		
 		$options = array
 		(

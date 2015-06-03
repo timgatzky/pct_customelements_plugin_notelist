@@ -1,2 +1,5 @@
+### 1.0.1
+Fixed: Exclude from the install tool
+
 ### 1.0.0
 initial commit

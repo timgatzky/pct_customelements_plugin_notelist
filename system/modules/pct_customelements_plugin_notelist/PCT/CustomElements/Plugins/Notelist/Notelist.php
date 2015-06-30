@@ -283,11 +283,11 @@ class Notelist extends \Contao\Frontend
 		
 		//-- variants
 		$arrVariants = array();
-		if($objAttr->get('allowNotelistVariants') > 0 && !empty($objAttr->get('notelistVariants')))
+		if($objAttr->get('allowNotelistVariants') > 0)
 		{
 			$arrTemplateVariants = array();
 			
-			$arrNotelistVariants = deserialize($objAttr->get('notelistVariants'));
+			$arrNotelistVariants = deserialize($objAttr->get('notelistVariants')) ?: array();
 			if(!is_array($arrNotelistVariants))
 			{
 				$arrNotelistVariants = array($arrNotelistVariants);

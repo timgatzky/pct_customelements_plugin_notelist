@@ -1,4 +1,7 @@
 ### 1.0.1
+Update: General fixes
+
+### 1.0.1
 Fixed: Exclude from the install tool
 
 ### 1.0.0

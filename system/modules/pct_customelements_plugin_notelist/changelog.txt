@@ -1,4 +1,7 @@
-### 1.0.1
+### 1.0.3
+Update: Output the field value in mail_notelist_customelements.html5 template by default
+
+### 1.0.3
 Update: General fixes
 
 ### 1.0.1

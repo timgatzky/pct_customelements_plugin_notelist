@@ -9,7 +9,7 @@
 <?php foreach($this->entries as $entry): ?>
 <?php echo $entry['amount']; ?>x
 <?php foreach($entry['fields'] as $field):?>
-<?php echo $field->label; ?>
+<?php echo $field->value(); ?>
 <?php endforeach; ?>
 <?php if(count($entry['variants']) > 0): ?>
 

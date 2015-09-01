@@ -30,7 +30,7 @@ use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
  * Class file
  * Notelist
  */
-class Notelist extends \Contao\Frontend
+class Notelist extends \Contao\Controller
 {
 	/**
 	 * Session node
@@ -56,6 +56,18 @@ class Notelist extends \Contao\Frontend
 			self::$objInstance = new self();
 		}
 		return self::$objInstance;
+	}
+	
+	
+	/**
+	 * Init
+	 */
+	public function __construct()
+	{
+		if(strlen($GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName']) > 0 && $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'] != $this->strSession)
+		{
+			$this->strSession = $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'];
+		}
 	}
 		
 	

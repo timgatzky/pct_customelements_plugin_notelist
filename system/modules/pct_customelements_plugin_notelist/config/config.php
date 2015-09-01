@@ -46,6 +46,7 @@ if(strlen(strpos(\Environment::getInstance()->scriptName, '/contao/install.php')
 $GLOBALS['customelements_notelist']['default_amount']	= 1;
 $GLOBALS['customelements_notelist']['autoReloadPage']	= true; // reload the page when amount is being updated or an item is placed on the notelist
 $GLOBALS['customelements_notelist']['formfieldLogic'] 	= 'customelement_notelist_%s_%s_%s'; // (SOURCE)_(ENTRY-ID)_(ATTRIBUTE-ID) e.g. customelement_notelist_tl_content_1_2
+$GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'] 		= 'customcatalognotelist';
 
 /**
  * Register attribute

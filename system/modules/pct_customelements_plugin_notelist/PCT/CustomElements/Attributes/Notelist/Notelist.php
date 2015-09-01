@@ -42,7 +42,7 @@ class Notelist extends \PCT\CustomElements\Core\Attribute
 			'label'			=> array( $this->get('title'),$this->get('description') ),
 			'exclude'		=> true,
 			'inputType'		=> 'checkbox',
-			'default'		=> $this->get('defaultValue') ?: 1,
+			'default'		=> $this->get('defaultValue'),
 			'eval'			=> $arrEval,
 			'sql'			=> "char(1) NOT NULL default ''",
 		);

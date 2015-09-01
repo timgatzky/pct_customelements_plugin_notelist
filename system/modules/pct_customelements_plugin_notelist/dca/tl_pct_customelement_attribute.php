@@ -38,6 +38,11 @@ if($objDcaHelper->getActiveRecord()->type == $strType)
 		// Show template info
 		\Message::addInfo(sprintf($GLOBALS['TL_LANG']['PCT_CUSTOMCATALOG']['MSC']['templateInfo_attribute'], 'customcatalog_attr_notelist'));
 	}
+	
+	$GLOBALS['TL_DCA'][$objDcaHelper->getTable()]['fields']['defaultValue']['inputType'] = 'select';
+	$GLOBALS['TL_DCA'][$objDcaHelper->getTable()]['fields']['defaultValue']['options'] = array(0,1);
+	$GLOBALS['TL_DCA'][$objDcaHelper->getTable()]['fields']['defaultValue']['eval'] = array();
+	
 }
 
 /**

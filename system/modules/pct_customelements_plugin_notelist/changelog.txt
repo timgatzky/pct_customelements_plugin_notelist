@@ -1,5 +1,6 @@
 ### 1.0.4
-Added: Allow custom session names via global: $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'] 
+Added: Allow custom session names via global: $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName']
+Update: tl_pct_customelement_attribute.defaultValue is now a select field
 
 ### 1.0.3
 Update: Output the field value in mail_notelist_customelements.html5 template by default

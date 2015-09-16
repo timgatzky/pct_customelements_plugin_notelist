@@ -1,3 +1,7 @@
+### 1.0.5
+Fixed: Return the correct array stack in getNotelist method
+Added: Notelist->getNotelists method to return the whole notelist session
+
 ### 1.0.4
 Added: Allow custom session names via global: $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName']
 Update: tl_pct_customelement_attribute.defaultValue is now a select field

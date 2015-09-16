@@ -164,31 +164,36 @@ class Notelist extends \Contao\Controller
 		$objSession = \Session::getInstance();
 		$arrSession = $objSession->get($this->strSession);
 		
-		if(!is_array($arrSession) || count($arrSession) < 1 )
+		if(!$varSource)
+		{
+			return $arrSession ?: array();
+		}
+		
+		if(!is_array($arrSession[$varSource]) || count($arrSession[$varSource]) < 1)
 		{
 			return array();
 		}
 		
-		// set to a certain notelist node
-		if(!empty($varSource) && count($arrSession[$varSource]) > 0)
-		{
-			$arrSession = $arrSession[$varSource];
-		}
-		
-		// clean out notelist session
-		$arrReturn = array();
-		foreach($arrSession as $id => $entries)
-		{
-			if(count($entries) < 1)
-			{
-				continue;
-			}
-			$arrReturn[$id] = $entries;
-		}
-		
-		return $arrReturn;
+		return $arrSession[$varSource];
 	}
 	
+	
+	/**
+	 * Return the whole notelist session
+	 * @return array
+	 */
+	public function getNotelists()
+	{
+		// Session
+		$objSession = \Session::getInstance();
+		$arrSession = $objSession->get($this->strSession);
+		if(!is_array($arrSession))
+		{
+			return array();
+		}
+		return $arrSession;
+	}
+
 	
 	/**
 	 * Returns true if an element is already in the notelist
@@ -198,9 +203,9 @@ class Notelist extends \Contao\Controller
 	 */
 	public function isInNotelist($varSource, $intItem)
 	{
-		$arrNotelist = $this->getNotelist();
+		$arrNotelist = $this->getNotelist($varSource);
 		
-		if(isset($arrNotelist[$varSource][$intItem]) && count($arrNotelist[$varSource][$intItem]) > 0)
+		if(isset($arrNotelist[$intItem]) && count($arrNotelist[$intItem]) > 0)
 		{
 			return true;
 		}

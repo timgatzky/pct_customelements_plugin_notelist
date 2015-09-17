@@ -326,8 +326,12 @@ class Formfield extends \Widget
 			#$strBuffer = trim(preg_replace('{(.)\1+}', '$1', $strBuffer));
 		}
 		
+		if($GLOBALS['CUSTOMELEMENTS_NOTELIST']['clearSessionAfterSubmit'] == true && $bolFormMail)
+		{
+			$objNotelist->remove($strSource);
+		}
+		
 		return $strBuffer;
-
 	}
 	
 	/**

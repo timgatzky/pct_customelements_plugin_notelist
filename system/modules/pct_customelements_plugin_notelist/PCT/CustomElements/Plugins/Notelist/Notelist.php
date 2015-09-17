@@ -424,5 +424,27 @@ class Notelist extends \Contao\Controller
 	}
 	
 	
+	/**
+	 * Clear a notelist
+	 * @param string
+	 */
+	public function remove($strSource)
+	{
+		// Session
+		$objSession = \Session::getInstance();
+		$arrSession = $objSession->get($this->strSession);
+		if(!is_array($arrSession[$strSource]))
+		{
+			return true;
+		}
+		
+		unset($arrSession[$strSource]);
+		
+		$objSession->set($this->strSession,$arrSession);
+		
+		return true;
+	}
+	
+	
 	
 }

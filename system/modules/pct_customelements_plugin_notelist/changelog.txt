@@ -1,3 +1,5 @@
+### 1.0.6
+
 ### 1.0.5
 Fixed: Return the correct array stack in getNotelist method
 Added: Notelist->getNotelists method to return the whole notelist session

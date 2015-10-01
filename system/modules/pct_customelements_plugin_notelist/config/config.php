@@ -31,12 +31,13 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
 /**
  * Stop here if CE Version is to low or notelist is not active
  */
+$blnInitialize = true;
 if(strlen(strpos(\Environment::getInstance()->scriptName, '/contao/install.php')) < 1)
 {
 	$objPluginFactory = new \PCT\CustomElements\Core\PluginFactory();
 	if(!in_array('notelist',$objPluginFactory::getActivePlugins()) && \Input::get('do') != 'repository_manager' )
 	{
-		return;
+		$blnInitialize = false;
 	}
 }
 
@@ -49,36 +50,38 @@ $GLOBALS['customelements_notelist']['formfieldLogic'] 	= 'customelement_notelist
 $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'] 		= 'customelementnotelist';
 $GLOBALS['CUSTOMELEMENTS_NOTELIST']['clearSessionAfterSubmit'] = false; // set to true if you want to clear the submitted notelist after submitting
 
-/**
- * Register attribute
- */
-$GLOBALS['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'] = array
-(
-	'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'],
-	'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
-	'class'		=> 'PCT\CustomElements\Attributes\Notelist',
-	'icon'		=> 'fa fa-check-square-o'
-);
-
-/**
- * Register filter
- */
-$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array
-(
-	'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'],
-	'path' 		=> PCT_CUSTOMELEMENTS_TAGS_PATH,
-	'class'		=> 'PCT\CustomElements\Filters\Notelist',
-	'icon'		=> 'fa fa-check-square'
-);
-
-/**
- * Form fields
- */
-array_insert($GLOBALS['TL_FFL'],count($GLOBALS['TL_FFL']),array
-(
-	'customelements_notelist'	=> 'PCT\CustomElements\Plugins\Notelist\Formfield'
-));
-
+if($blnInitialize === true)
+{
+	/**
+	 * Register attribute
+	 */
+	$GLOBALS['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'] = array
+	(
+		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'],
+		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
+		'class'		=> 'PCT\CustomElements\Attributes\Notelist',
+		'icon'		=> 'fa fa-check-square-o'
+	);
+	
+	/**
+	 * Register filter
+	 */
+	$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array
+	(
+		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'],
+		'path' 		=> PCT_CUSTOMELEMENTS_TAGS_PATH,
+		'class'		=> 'PCT\CustomElements\Filters\Notelist',
+		'icon'		=> 'fa fa-check-square'
+	);
+	
+	/**
+	 * Form fields
+	 */
+	array_insert($GLOBALS['TL_FFL'],count($GLOBALS['TL_FFL']),array
+	(
+		'customelements_notelist'	=> 'PCT\CustomElements\Plugins\Notelist\Formfield'
+	));
+}
 
 /**
  * Hooks

@@ -1,4 +1,6 @@
 ### 1.0.6
+Fixed: Use a checker variable instead of a strict return to bypass the initialization when plugin is not loaded
+Added: $GLOBALS['CUSTOMELEMENTS_NOTELIST']['clearSessionAfterSubmit'] flag (default: false)
 
 ### 1.0.5
 Fixed: Return the correct array stack in getNotelist method

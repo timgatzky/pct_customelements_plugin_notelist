@@ -32,10 +32,9 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
  * Stop here if CE Version is to low or notelist is not active
  */
 $blnInitialize = true;
-if(strlen(strpos(\Environment::getInstance()->scriptName, '/contao/install.php')) < 1)
+if( TL_MODE == 'BE' &&  count(\Session::getInstance()->getData()) > 0 )
 {
-	$objPluginFactory = new \PCT\CustomElements\Core\PluginFactory();
-	if(!in_array('notelist',$objPluginFactory::getActivePlugins()) && \Input::get('do') != 'repository_manager' )
+	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && \Input::get('do') != 'repository_manager' )
 	{
 		$blnInitialize = false;
 	}

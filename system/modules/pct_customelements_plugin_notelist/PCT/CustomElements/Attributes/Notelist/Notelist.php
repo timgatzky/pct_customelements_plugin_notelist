@@ -64,7 +64,7 @@ class Notelist extends \PCT\CustomElements\Core\Attribute
 	 */
 	public function renderCallback($strField,$varValue,$objTemplate,$objAttribute)
 	{
-		if(empty($varValue) || count($varValue) < 1 || !$objAttribute->getOrigin())
+		if(empty($varValue) || count($varValue) < 1)
 		{
 			return '';
 		}

@@ -238,10 +238,19 @@ class Notelist extends \Contao\Controller
 				return $strValue;
 				
 			break;
+			case 'customcatalognotelist':
+				$objNotelist = new \PCT\CustomElements\Plugins\Notelist\Notelist();
+				switch($element[1])
+				{
+					case 'total':
+					case 'count':
+						return count($objNotelist->getNotelist($element[2]));
+						break;
+				}
+				break;
 			
 			default: return false; break;
 		}
-
 
 		return false;
 	}

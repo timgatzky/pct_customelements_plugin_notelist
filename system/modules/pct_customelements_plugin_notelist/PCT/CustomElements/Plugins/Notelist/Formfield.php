@@ -467,7 +467,12 @@ class Formfield extends \Widget
 		while($objVisibles->next())
 		{
 			$objAttribute = \PCT\CustomElements\Core\AttributeFactory::findById($objVisibles->id);
-			$objAttribute->generate();
+			// skip deprected selected attributes
+			if(!$objAttribute)
+			{
+				continue;
+			}
+			$objAttribute = $objAttribute->generate();
 			$objAttribute->setOrigin($objOrigin);
 			$objAttribute->set('objActiveRecord',$objRow);
 			

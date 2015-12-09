@@ -1,3 +1,6 @@
+### 1.0.8
+Fixed: Wrong entry data in email. Skip deprecated attributes and create a whole new object to avoid overriding in email
+
 ### 1.0.7
 Added: Inserttag: {{customcatalognotelist::total::MY-TABLE}}
 

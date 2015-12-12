@@ -76,10 +76,7 @@ if($blnInitialize === true)
 	/**
 	 * Form fields
 	 */
-	array_insert($GLOBALS['TL_FFL'],count($GLOBALS['TL_FFL']),array
-	(
-		'customelements_notelist'	=> 'PCT\CustomElements\Plugins\Notelist\Formfield'
-	));
+	$GLOBALS['TL_FFL']['customelements_notelist'] = 'PCT\CustomElements\Plugins\Notelist\Formfield';
 }
 
 /**

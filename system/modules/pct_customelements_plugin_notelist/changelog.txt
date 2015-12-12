@@ -1,3 +1,6 @@
+### 1.0.9
+Update: Avoid array_insert in the config.php because contao uses it incorrect when the internal cache is turned on
+
 ### 1.0.8
 Fixed: Wrong entry data in email. Skip deprecated attributes and create a whole new object to avoid overriding in email
 

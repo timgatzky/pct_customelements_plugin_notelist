@@ -34,7 +34,7 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
 $blnInitialize = true;
 if( TL_MODE == 'BE' &&  count(\Session::getInstance()->getData()) > 0 )
 {
-	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && \Input::get('do') != 'repository_manager' )
+	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && !in_array(\Input::get('do'), array('repository_manager','composer')) )
 	{
 		$blnInitialize = false;
 	}

@@ -1,3 +1,7 @@
+### 1.1.0
+Update: Check in config.php if composer is updating the database
+Update: PHP7 ready
+
 ### 1.0.9
 Update: Avoid array_insert in the config.php because contao uses it incorrect when the internal cache is turned on
 

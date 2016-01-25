@@ -318,7 +318,6 @@ class Formfield extends \Widget
 		
 		if($bolFormMail)
 		{
-			$objString = \String::getInstance();
 			$strBuffer = str_replace("\t", " ", $strBuffer);;
 			#$strBuffer = $objString->decodeEntities(trim($strBuffer)); 
 			$strBuffer = trim(preg_replace('/\.$/m', ' ', $strBuffer));

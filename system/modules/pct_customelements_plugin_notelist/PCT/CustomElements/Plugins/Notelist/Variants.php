@@ -141,7 +141,7 @@ class Variants
 				{
 					foreach($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField'] as $callback)
 					{
-						return \System::importStatic($callback[0])->$callback[1]($arrFieldDef,$objAttribute);
+						return \System::importStatic($callback[0])->{$callback[1]}($arrFieldDef,$objAttribute);
 					}
 				}
 				return null;

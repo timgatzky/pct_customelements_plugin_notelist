@@ -227,16 +227,19 @@ class Notelist extends \Contao\Controller
 		switch($element[0])
 		{
 			case 'form':
+				if(isset($_POST[$element[1]]))
+				{
+					return false;
+				}
+				
 				$strValue = \Input::post($element[1]);
 				
-				// fallback
-				if(strlen($strValue) < 1)
+				if(is_array($strValue))
 				{
-					$strValue = $_POST[$element[1]];
+					$strValue = serialize($strValue);
 				}
 				
 				return $strValue;
-				
 			break;
 			case 'customcatalognotelist':
 				$objNotelist = new \PCT\CustomElements\Plugins\Notelist\Notelist();

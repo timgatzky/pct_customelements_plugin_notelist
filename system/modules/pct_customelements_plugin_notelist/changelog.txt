@@ -1,3 +1,6 @@
+### 1.1.1
+Update: Serialize arrays in form:: inserttags
+
 ### 1.1.0
 Update: Check in config.php if composer is updating the database
 Update: PHP7 ready

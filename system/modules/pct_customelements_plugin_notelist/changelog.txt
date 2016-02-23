@@ -1,3 +1,6 @@
+### 1.1.2
+Update: Changed template info text and template information in the template file
+
 ### 1.1.1
 Update: Serialize arrays in form:: inserttags
 

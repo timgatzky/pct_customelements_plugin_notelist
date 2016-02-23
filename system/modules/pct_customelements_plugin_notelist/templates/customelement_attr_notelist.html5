@@ -1,6 +1,6 @@
 <?php
 /**
- * MetaModel notelist frontend template
+ * CustomElement notelist frontend template
  */
 ?>
 <?php if(!$this->includeNotelist) return ''; ?>

@@ -1,5 +1,6 @@
 ### 1.1.2
 Update: Changed template info text and template information in the template file
+Update: Removed the parse() method in Formfield class
 
 ### 1.1.1
 Update: Serialize arrays in form:: inserttags

@@ -72,16 +72,6 @@ class Formfield extends \Widget
 	 * Generate the widget and return it as string
 	 * @return string
 	 */
-	public function parse()
-	{
-		return $this->generate();
-	}
-	
-	
-	/**
-	 * Generate the widget and return it as string
-	 * @return string
-	 */
 	public function generate()
 	{
 		if(TL_MODE == 'BE')

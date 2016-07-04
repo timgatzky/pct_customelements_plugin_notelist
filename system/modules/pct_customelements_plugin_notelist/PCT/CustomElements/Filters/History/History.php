@@ -38,6 +38,8 @@ class History extends \PCT\CustomElements\Filter
 		$strTable = $this->getTable();
 				
 		$arrIds = array();
+		
+		// filter is empty
 		if(count($arrSession['tables'][$strTable]) < 1 || !is_array($arrSession['tables'][$strTable]))
 		{
 			if($objModule->customcatalog_filter_showAll)

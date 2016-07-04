@@ -22,7 +22,7 @@ namespace PCT\CustomElements\Plugins\Notelist;
  * Class file
  * Hooks
  */
-class Hooks extends \PCT\CustomElements\Core\Hooks
+class Hooks
 {
 	/**
 	 * Current object instance (Singleton)

@@ -1,3 +1,8 @@
+### 1.2.0
+New: History filter (#2)
+Update: mail_notelist_customelements.html5: convert arrays to string
+Update: Hooks class does not extend \PCT\CustomElements\Core\Hooks anymore
+
 ### 1.1.2
 Update: Changed template info text and template information in the template file
 Update: Removed the parse() method in Formfield class

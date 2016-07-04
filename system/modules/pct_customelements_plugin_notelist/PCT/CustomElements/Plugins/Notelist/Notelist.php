@@ -517,16 +517,17 @@ class Notelist extends \Contao\Controller
 		}
 		
 		// check if user visited a new entry or remains on the last one visited
-		if($arrSession['lastTableVisited'] != $strTable && $arrSession['lastItemVisited'] != $objEntry->id)
+		if($arrSession['lastTableVisited'] != $strTable || $arrSession['lastItemVisited'] != $objEntry->id)
 		{
 			// add new entry
 			$arrSession['tables'][$strTable][] = $objEntry->id;
-			// store information
-			$arrSession['lastUrl'] = \Environment::get('request');
-			$arrSession['lastTableVisited'] = $strTable;
-			$arrSession['lastItemVisited'] = $objEntry->id;
 			$arrSession['tstamp'] = $time;
 		}
+		
+		// store information
+		$arrSession['lastUrl'] = \Environment::get('request');
+		$arrSession['lastTableVisited'] = $strTable;
+		$arrSession['lastItemVisited'] = $objEntry->id;
 		
 		// update session
 		$objSession->set('customelementnotelist_history',$arrSession);

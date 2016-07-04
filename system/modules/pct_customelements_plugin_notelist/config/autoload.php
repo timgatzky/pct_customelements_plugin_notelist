@@ -31,6 +31,7 @@ ClassLoader::addClasses(array
 (
 	'PCT\CustomElements\Attributes\Notelist'			=> $path.'/PCT/CustomElements/Attributes/Notelist/Notelist.php',
 	'PCT\CustomElements\Filters\Notelist'				=> $path.'/PCT/CustomElements/Filters/Notelist/Notelist.php',
+	'PCT\CustomElements\Filters\History'				=> $path.'/PCT/CustomElements/Filters/History/History.php',
 	'PCT\CustomElements\Plugins\Notelist\Hooks'			=> $path.'/PCT/CustomElements/Plugins/Notelist/Hooks.php',
 	'PCT\CustomElements\Plugins\Notelist\Notelist'		=> $path.'/PCT/CustomElements/Plugins/Notelist/Notelist.php',
 	'PCT\CustomElements\Plugins\Notelist\Variants'		=> $path.'/PCT/CustomElements/Plugins/Notelist/Variants.php',

@@ -68,9 +68,17 @@ if($blnInitialize === true)
 	$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array
 	(
 		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'],
-		'path' 		=> PCT_CUSTOMELEMENTS_TAGS_PATH,
+		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
 		'class'		=> 'PCT\CustomElements\Filters\Notelist',
 		'icon'		=> 'fa fa-check-square'
+	);
+	
+	$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['history'] = array
+	(
+		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['history'],
+		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
+		'class'		=> 'PCT\CustomElements\Filters\History',
+		'icon'		=> 'fa fa-history'
 	);
 	
 	/**
@@ -83,5 +91,7 @@ if($blnInitialize === true)
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] 		= array('\PCT\CustomElements\Plugins\Notelist\Notelist', 'replaceTags'); 
+$GLOBALS['TL_HOOKS']['getFrontendModule'][] 		= array('\PCT\CustomElements\Plugins\Notelist\Notelist', 'createHistory');
+$GLOBALS['TL_HOOKS']['getContentElement'][] 		= array('\PCT\CustomElements\Plugins\Notelist\Notelist', 'createHistory');
 
 

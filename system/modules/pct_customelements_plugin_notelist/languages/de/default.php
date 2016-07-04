@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'] = array('Mer
  * Filter
  */
 $GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array('Merkliste-Einträge','Filtert die Liste nach Einträgen, die in der Merkliste liegen');
+$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['history'] = array('Historie, Besuchte Einträge','Filtert die Liste nach besuchten Einträgen, die beim Ansehen von Detaileinträgen hinterlegt wird.');
 
 
 /**

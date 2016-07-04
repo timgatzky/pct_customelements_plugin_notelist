@@ -16,7 +16,6 @@
  * Table tl_pct_customelement_filter
  */
 $objDcaHelper = \PCT\CustomElements\Helper\DcaHelper::getInstance()->setTable('tl_pct_customelement_filter');
-$strType = 'notelist';
 
 /**
  * Palettes
@@ -24,4 +23,5 @@ $strType = 'notelist';
 $arrPalettes = $objDcaHelper->getPalettesAsArray('default');
 $objDcaHelper->removeField('urlparam');
 $objDcaHelper->removePalette('template_legend');
-$GLOBALS['TL_DCA']['tl_pct_customelement_filter']['palettes'][$strType] = $objDcaHelper->generatePalettes();
+$GLOBALS['TL_DCA']['tl_pct_customelement_filter']['palettes']['notelist'] = $objDcaHelper->generatePalettes();
+$GLOBALS['TL_DCA']['tl_pct_customelement_filter']['palettes']['history'] = $objDcaHelper->generatePalettes();

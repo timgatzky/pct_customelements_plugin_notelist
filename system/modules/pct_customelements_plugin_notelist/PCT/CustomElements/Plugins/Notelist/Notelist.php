@@ -458,5 +458,82 @@ class Notelist extends \Contao\Controller
 	}
 	
 	
+	/**
+	 * Create a history of visited entries
+	 * @param object
+	 * @param string
+	 */
+	public function createHistory($objRow, $strBuffer)
+	{
+		$varEntry = \Input::get( (\Config::get('useAutoItem') === true ? 'auto_item' : $GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']) );
+		if(strlen($varEntry) < 1)
+		{
+			return $strBuffer;
+		}
+		
+		$objModel = clone($objRow);
+		$strTable = '';
+		
+		// is frontend module in pagelayout
+		if( in_array($objModel->type, array('customcatalogreader','customcataloglist')) && strlen($objModel->customcatalog) > 0)
+		{
+			$strTable = $objModel->customcatalog;
+		}
+		else if($objModel->type == 'module' && $objModel->module > 0)
+		{
+			$objModuleModel = \ModuleModel::findByPk($objModel->module);
+			if($objModuleModel !== null)
+			{
+				return $this->createHistory($objModuleModel, $strBuffer);
+			}
+		}
+		
+		$objCC = \PCT\CustomElements\Plugins\CustomCatalog\Core\CustomCatalogFactory::findByTableName($strTable);
+		if($objCC === null || strlen($strTable) < 1)
+		{
+			return $strBuffer;
+		}
+		
+		$strLanguage = '';
+		if( $objCC->get('multilanguage') && ($objModel->customcatalog_filter_actLang || $objCC->get('aliasField') > 0) )
+		{
+			$objMultilanguage = new \PCT\CustomElements\Plugins\CustomCatalog\Core\Multilanguage;
+			$strLanguage = $objMultilanguage->getActiveFrontendLanguage();
+		}
+		
+		// render the regular details page of a customcatalog entry
+		$objEntry = $objCC->findPublishedItemByIdOrAlias(\Input::get($GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']),$strLanguage);
+		
+		$time = time();
+		$objSession = \Session::getInstance();
+		
+		// get the current session
+		$arrSession = $objSession->get('customelementnotelist_history');
+		if(!is_array($arrSession))
+		{
+			$arrSession = array();
+			$arrSession['createTime'] = $time;
+			$arrSession['tables'] = array();
+		}
+		
+		// check if user visited a new entry or remains on the last one visited
+		if($arrSession['lastTableVisited'] != $strTable && $arrSession['lastItemVisited'] != $objEntry->id)
+		{
+			// add new entry
+			$arrSession['tables'][$strTable][] = $objEntry->id;
+			// store information
+			$arrSession['lastUrl'] = \Environment::get('request');
+			$arrSession['lastTableVisited'] = $strTable;
+			$arrSession['lastItemVisited'] = $objEntry->id;
+			$arrSession['tstamp'] = $time;
+		}
+		
+		// update session
+		$objSession->set('customelementnotelist_history',$arrSession);
+		
+		return $strBuffer;
+	}
+	
+	
 	
 }

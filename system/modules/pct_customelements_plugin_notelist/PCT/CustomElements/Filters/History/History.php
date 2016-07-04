@@ -56,13 +56,13 @@ class History extends \PCT\CustomElements\Filter
 			$i = 0;
 			
 			// reduce to limit
-			if($objModule->customcatalog_limit > 0)
+			if($objModule->customcatalog_limit > 0 && count($values) > 0)
 			{
 				foreach($values as $id)
 				{
 					if($i < $objModule->customcatalog_limit)
 					{
-						$arrIds = $id;
+						$arrIds[] = $id;
 					}
 					$i++;
 				}

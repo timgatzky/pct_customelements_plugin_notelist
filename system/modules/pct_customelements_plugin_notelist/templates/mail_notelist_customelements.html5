@@ -15,6 +15,9 @@
 
 (<?php foreach($entry['variants'] as $name => $data): ?>
 <?php if($data['value']): ?>
+<?php // convert array values to comma separated string
+if(is_array($data['value'])) {$data['value'] = implode(', ', $data['value']);}
+?>
 <?php echo $data['value']; ?>
 <?php endif; ?>
 <?php endforeach; ?>)

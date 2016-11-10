@@ -1,8 +1,6 @@
-### 1.3.0
-Added: Engl. translations by Thomas Kettner
-
 ### 1.2.0
 New: History filter (#2)
+Added: Engl. translations by Thomas Kettner
 Update: mail_notelist_customelements.html5: convert arrays to string
 Update: Hooks class does not extend \PCT\CustomElements\Core\Hooks anymore
 

@@ -435,11 +435,11 @@ class Formfield extends \Widget
 		$arrSource = explode('::', $this->customelements_notelist_source);
 		
 		$objVisibles = \PCT\CustomElements\Core\AttributeFactory::fetchMultipleById($arrVisibles);
-		if($objVisibles->numRows < 1 )
+		if($objVisibles === null)
 		{
 			return array();
 		}
-				
+		
 		$objRow = \Database::getInstance()->prepare("SELECT * FROM ".$arrEntry['source']." WHERE id=?")->limit(1)->execute($arrEntry['item_id']);
 		if($objRow->numRows < 1)
 		{

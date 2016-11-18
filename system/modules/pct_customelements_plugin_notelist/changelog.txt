@@ -1,3 +1,6 @@
+### 1.2.1
+Fixed: ->numRows cannot be used in Model\Collections anymore
+
 ### 1.2.0
 New: History filter (#2)
 Added: Engl. translations by Thomas Kettner

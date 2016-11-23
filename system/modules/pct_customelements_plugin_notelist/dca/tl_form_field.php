@@ -62,7 +62,6 @@ $objDcaHelper->addFields(array(
 	'customelements_notelist_formTpl' => array
 	(
 		'label'					  => &$GLOBALS['TL_LANG']['tl_form_field']['customelements_notelist_formTpl'],
-		#'default'				  => 'form_mm_notelist',
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('\PCT\CustomElements\Plugins\Notelist\TableHelper', 'getFormTemplates'),
@@ -72,7 +71,6 @@ $objDcaHelper->addFields(array(
 	'customelements_notelist_mailTpl' => array
 	(
 		'label'					  => &$GLOBALS['TL_LANG']['tl_form_field']['customelements_notelist_mailTpl'],
-		#'default'				  => 'mail_booking',
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('\PCT\CustomElements\Plugins\Notelist\TableHelper', 'getMailTemplates'),

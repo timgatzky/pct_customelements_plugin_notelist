@@ -19,11 +19,6 @@
 namespace PCT\CustomElements\Attributes;
 
 /**
- * Imports
- */
-use PCT\CustomElements\Helper\ControllerHelper as ControllerHelper;
-
-/**
  * Class file
  * Notelist
  */

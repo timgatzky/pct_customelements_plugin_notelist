@@ -89,6 +89,16 @@ class Formfield extends \Widget
 		return $this->render();
 	}
 	
+	
+	/**
+	 * Parse the widget
+	 */
+	public function parse($blnForMail=false)
+	{
+		return $this->render($blnForMail);
+	}
+	
+	
 	/**
 	 * Generate the field and return html string
 	 * @param boolean

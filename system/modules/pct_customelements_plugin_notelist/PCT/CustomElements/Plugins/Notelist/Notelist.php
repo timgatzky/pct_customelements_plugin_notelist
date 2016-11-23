@@ -53,7 +53,7 @@ class Notelist extends \Contao\Controller
 	{
 		if (!is_object(self::$objInstance))
 		{
-			self::$objInstance = new self();
+			self::$objInstance = new static();
 		}
 		return self::$objInstance;
 	}

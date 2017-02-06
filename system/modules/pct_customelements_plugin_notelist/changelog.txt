@@ -1,3 +1,6 @@
+### 1.2.3
+Fixed: Cannot use ->numRows in ModelCollection
+
 ### 1.2.2
 Update: Instantiate classes as new static
 Update: Added the parse() method again in the formfield widget class. Contao seems to require it again

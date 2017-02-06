@@ -118,7 +118,7 @@ class TableHelper extends \Contao\Backend
 		$objCC = \Database::getInstance()->prepare("SELECT * FROM tl_pct_customelement WHERE id=(SELECT pid FROM tl_pct_customelement_group WHERE id=?)")->limit(1)->execute($objDC->activeRecord->pid);
 		
 		$objAttributes = \PCT\CustomElements\Core\AttributeFactory::fetchMultipleByCustomElement($objCC->id);
-		if($objAttributes->numRows < 1)
+		if($objAttributes === null)
 		{
 			return array();
 		}

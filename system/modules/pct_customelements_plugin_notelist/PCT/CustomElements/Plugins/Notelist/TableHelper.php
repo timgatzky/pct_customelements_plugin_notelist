@@ -94,7 +94,7 @@ class TableHelper extends \Contao\Backend
 				break;
 		}
 		
-		if($objAttributes->numRows < 1)
+		if($objAttributes === null)
 		{
 			return array();
 		}

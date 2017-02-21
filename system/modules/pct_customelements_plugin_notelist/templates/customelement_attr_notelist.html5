@@ -5,7 +5,7 @@
 ?>
 <?php if(!$this->includeNotelist) return ''; ?>
 
-<div class="customelements_notelist notelist">
+<div class="customelements_notelist notelist <?php if($this->focus): ?>focus<?php endif; ?>">
 <?php if($this->statusMessage): ?>
 <p class="info"><?php echo $this->statusMessage; ?></p>
 <?php endif; ?>
@@ -35,3 +35,19 @@
 </div>
 </form>
 </div>
+
+<?php if($this->focus): ?>
+<script type='text/javascript'>
+/* <![CDATA[ */
+
+/**
+ * Scroll to id
+ */
+jQuery(document).ready(function()
+{
+	jQuery("html, body").animate({scrollTop: jQuery('#<?= $this->formID; ?>').offset().top - 0}, 500);
+});
+
+/* ]]> */
+</script>
+<?php endif; ?>

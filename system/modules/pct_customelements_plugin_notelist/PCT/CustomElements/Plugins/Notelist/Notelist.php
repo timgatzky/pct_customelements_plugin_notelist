@@ -268,6 +268,7 @@ class Notelist extends \Contao\Controller
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
 		$objInput = \Input::getInstance();
+		$objSession = \Session::getInstance();
 		
 		$strSource = $objConfig->source;
 		
@@ -413,7 +414,10 @@ class Notelist extends \Contao\Controller
 					{
 						$objTemplate->statusMessage = $GLOBALS['TL_LANG']['customelements_notelist']['itemAdded'];
 					}
-				
+					
+					// remember item
+					$objSession->set('customcatalognotelist_added',$strFormID);
+					
 					// set the notelist
 					$this->setItem($strSource,$intItem,$intAmount,$arrVariants,$blnReload,array('attr_id'=>$objAttr->get('id')));
 				}
@@ -421,6 +425,9 @@ class Notelist extends \Contao\Controller
 			// remove an item and reload the page immediately
 			else if(strlen($objTemplate->removeName) > 0)
 			{
+				// remember item
+				$objSession->set('customcatalognotelist_removed',$strFormID);
+				
 				$this->removeItem($strSource,$intItem);
 			}
 			else {}
@@ -430,6 +437,23 @@ class Notelist extends \Contao\Controller
 		if($arrItem['amount'])
 		{
 			$objTemplate->added = true;
+		}
+		
+		// set focus flag when added
+		if($objSession->get('customcatalognotelist_added') == $strFormID)
+		{
+			$objTemplate->focus = true;
+			$objTemplate->focusAdded = true;
+			// remove flag
+			$objSession->remove('customcatalognotelist_added');
+		}
+		
+		if($objSession->get('customcatalognotelist_removed') == $strFormID)
+		{
+			$objTemplate->focus = true;
+			$objTemplate->focusRemove = true;
+			// remove flag
+			$objSession->remove('customcatalognotelist_removed');
 		}
 		
 		return $objTemplate->parse();

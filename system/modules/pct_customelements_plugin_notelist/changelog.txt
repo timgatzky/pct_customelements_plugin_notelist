@@ -1,3 +1,6 @@
+### 1.3.1
+Fixed: Use \Input::get with 3. parameter = true ($blnKeepUnused) to not let Contao set the value as GET parameter
+
 ### 1.3.0
 Added: One time session flags when an item has been added or removed to set focus on that particular item
 Added: jquery scroll script in  customelement_attr_notelist.html5 to scroll to added/removed item (new Template vars: ->focus, ->focusAdded, ->focusRemoved)

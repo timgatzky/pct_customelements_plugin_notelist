@@ -489,7 +489,7 @@ class Notelist extends \Contao\Controller
 	 */
 	public function createHistory($objRow, $strBuffer)
 	{
-		$varEntry = \Input::get( (\Config::get('useAutoItem') === true ? 'auto_item' : $GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']) );
+		$varEntry = \Input::get( (\Config::get('useAutoItem') === true ? 'auto_item' : $GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']),false,true );
 		if(strlen($varEntry) < 1)
 		{
 			return $strBuffer;

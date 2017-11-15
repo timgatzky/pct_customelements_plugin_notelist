@@ -444,7 +444,7 @@ class Formfield extends \Widget
 		
 		$arrSource = explode('::', $this->customelements_notelist_source);
 		
-		$objVisibles = \PCT\CustomElements\Core\AttributeFactory::fetchMultipleById($arrVisibles);
+		$objVisibles = \PCT\CustomElements\Core\AttributeFactory::fetchMultipleById($arrVisibles,array('order'=>'FIELD(id,'.implode(',', $arrVisibles).')'));
 		if($objVisibles === null)
 		{
 			return array();

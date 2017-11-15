@@ -1,3 +1,6 @@
+### 1.3.2
+Fixed: Respect the attribute order in formfield (#11)
+
 ### 1.3.1
 Fixed: Use \Input::get with 3. parameter = true ($blnKeepUnused) to not let Contao set the value as GET parameter
 

@@ -16,7 +16,7 @@
  * Constants
  */ 
 define(PCT_CUSTOMELEMENTS_NOTELIST_PATH,'system/modules/pct_customelements_plugin_notelist');
-define(PCT_CUSTOMELEMENTS_NOTELIST_VERSION,'1.3.1');
+define(PCT_CUSTOMELEMENTS_NOTELIST_VERSION,'1.3.2');
 
 /**
  * Register plugin

@@ -40,7 +40,7 @@ class History extends \PCT\CustomElements\Filter
 		$arrIds = array();
 		
 		// filter is empty
-		if(count($arrSession['tables'][$strTable]) < 1 || !is_array($arrSession['tables'][$strTable]))
+		if(empty($arrSession['tables'][$strTable]) || !is_array($arrSession['tables'][$strTable]))
 		{
 			if($objModule->customcatalog_filter_showAll)
 			{
@@ -58,7 +58,7 @@ class History extends \PCT\CustomElements\Filter
 			$i = 0;
 			
 			// reduce to limit
-			if($objModule->customcatalog_limit > 0 && count($values) > 0)
+			if($objModule->customcatalog_limit > 0 && !empty($values))
 			{
 				foreach($values as $id)
 				{

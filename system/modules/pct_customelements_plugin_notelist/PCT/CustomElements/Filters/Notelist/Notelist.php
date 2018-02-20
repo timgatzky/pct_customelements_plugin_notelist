@@ -37,7 +37,7 @@ class Notelist extends \PCT\CustomElements\Filter
 		
 		$objModule = $this->getCustomCatalog()->getOrigin();
 		
-		if(count($arrNotelist) < 1)
+		if(empty($arrNotelist))
 		{
 			if($objModule->customcatalog_filter_showAll)
 			{

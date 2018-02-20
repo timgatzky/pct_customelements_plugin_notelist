@@ -57,7 +57,7 @@ class Hooks
 	 */
 	public function callSetItemHook($arrSession,$strSource,$intItem,$intAmount,$arrVariants)
 	{
-		if (isset($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem']) && count($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem']) > 0)
+		if (isset($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem']) && !empty($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem']))
 		{
 			foreach($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem'] as $callback)
 			{
@@ -77,7 +77,7 @@ class Hooks
 	 */
 	public function callRemoveItemHook($arrSession,$strSource,$intItem)
 	{
-		if (isset($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem']) && count($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem']) > 0)
+		if (isset($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem']) && !empty($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem']))
 		{
 			foreach($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem'] as $callback)
 			{

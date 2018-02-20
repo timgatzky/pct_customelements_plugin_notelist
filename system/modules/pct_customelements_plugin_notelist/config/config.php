@@ -15,8 +15,8 @@
 /**
  * Constants
  */ 
-define(PCT_CUSTOMELEMENTS_NOTELIST_PATH,'system/modules/pct_customelements_plugin_notelist');
-define(PCT_CUSTOMELEMENTS_NOTELIST_VERSION,'1.3.2');
+define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');
+define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.3.3');
 
 /**
  * Register plugin
@@ -32,7 +32,7 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
  * Stop here if CE Version is to low or notelist is not active
  */
 $blnInitialize = true;
-if( TL_MODE == 'BE' &&  count(\Session::getInstance()->getData()) > 0 )
+if( TL_MODE == 'BE' &&  !empty(\Session::getInstance()->getData()))
 {
 	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && !in_array(\Input::get('do'), array('repository_manager','composer')) )
 	{

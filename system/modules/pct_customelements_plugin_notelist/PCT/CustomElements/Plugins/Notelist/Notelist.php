@@ -169,7 +169,7 @@ class Notelist extends \Contao\Controller
 			return $arrSession ?: array();
 		}
 		
-		if(!is_array($arrSession[$varSource]) || count($arrSession[$varSource]) < 1)
+		if(!is_array($arrSession[$varSource]) || empty($arrSession[$varSource]))
 		{
 			return array();
 		}
@@ -205,7 +205,7 @@ class Notelist extends \Contao\Controller
 	{
 		$arrNotelist = $this->getNotelist($varSource);
 		
-		if(isset($arrNotelist[$intItem]) && count($arrNotelist[$intItem]) > 0)
+		if(isset($arrNotelist[$intItem]) && !empty($arrNotelist[$intItem]))
 		{
 			return true;
 		}

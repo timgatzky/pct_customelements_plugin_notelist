@@ -123,7 +123,7 @@ class Variants
 				$objDC->field = $objAttribute->get('alias');
 				$arrOptions = $objAttribute->getOptions($objDC);
 				
-				if(count($arrOptions) > 0)
+				if(!empty($arrOptions) && is_array($arrOptions))
 				{	
 					$tmp = array();
 					foreach($arrOptions as $k => $v)
@@ -137,7 +137,7 @@ class Variants
 				break;
 			// HOOK: allow other extensions to insert widgets
 			default:
-				if (isset($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField']) && count($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField']) > 0)
+				if (isset($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField']) && !empty($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField']))
 				{
 					foreach($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField'] as $callback)
 					{
@@ -163,7 +163,7 @@ class Variants
 	 */
 	protected function getOptions($arrFieldDef)
 	{
-		if(count($arrFieldDef['options']) < 1 && !$arrFieldDef['eval']['includeBlankOption'])
+		if(empty($arrFieldDef['options']) && !$arrFieldDef['eval']['includeBlankOption'])
 		{
 			return array();
 		}

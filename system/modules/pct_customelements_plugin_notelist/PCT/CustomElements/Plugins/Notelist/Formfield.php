@@ -127,7 +127,7 @@ class Formfield extends \Widget
 		$objTemplate->empty = $GLOBALS['TL_LANG']['customelements_notelist']['emptyInfo'];
 		
 		$arrNotelist = $objNotelist->getNotelist($strSource);
-		if(count($arrNotelist) < 1)
+		if(empty($arrNotelist))
 		{
 			return $objTemplate->parse();
 		}
@@ -191,7 +191,7 @@ class Formfield extends \Widget
 				$entry['statusMessage'] = $this->strStatusMessage;
 				
 				//-- variants
-				if(count($entry['variants']) > 0)
+				if(!empty($entry['variants']) && is_array($entry['variants']))
 				{
 					$arrTemplateVariants = array();
 		
@@ -256,7 +256,7 @@ class Formfield extends \Widget
 				$entry['fields'] = $this->prepareDataForWidget($entry,$arrVisibles);
 				
 				//-- variants
-				if(count($entry['variants']) > 0)
+				if(!empty($entry['variants']) && is_array($entry['variants']))
 				{
 					$arrTemplateVariants = array();
 			

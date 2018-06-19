@@ -287,6 +287,7 @@ class Notelist extends \Contao\Controller
 		$objTemplate->formID = $strFormID;
 		$objTemplate->itemID = $arrRow['id'];
 		$objTemplate->source = $strSource;
+		$objTemplate->variants = array();
 		
 		//-- submits
 		$objTemplate->submit = $GLOBALS['TL_LANG']['customelements_notelist']['submitLabel'];

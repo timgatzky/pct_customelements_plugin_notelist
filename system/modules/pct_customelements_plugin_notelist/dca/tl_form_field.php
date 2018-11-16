@@ -47,7 +47,7 @@ $objDcaHelper->addFields(array(
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('\PCT\CustomElements\Plugins\Notelist\TableHelper', 'getSources'),
-		'eval'                    => array('includeBlankOption'=>true,'mandatory'=>true,'submitOnChange'=>true),
+		'eval'                    => array('includeBlankOption'=>true,'mandatory'=>true,'submitOnChange'=>true,'chosen'=>true),
 		'sql'					  => "varchar(64) NOT NULL default ''",
 	),
 	'customelements_notelist_visibles' => array

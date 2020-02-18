@@ -30,7 +30,7 @@ use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
  * Class file
  * Formfield
  */
-class Formfield extends \Widget
+class Formfield extends \Contao\Widget
 {
 	/**
 	 * @var string
@@ -76,7 +76,7 @@ class Formfield extends \Widget
 	{
 		if(TL_MODE == 'BE')
 		{
-			$objTemplate = new \BackendTemplate('be_wildcard');
+			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### CUSTOMELEMENTS NOTELIST ###';
 			$objTemplate->id = $this->id;
 			$objTemplate->title = $this->headline;
@@ -114,7 +114,7 @@ class Formfield extends \Widget
 		$arrSource = explode('::', $this->customelements_notelist_source);
 		$strSource = $arrSource[1];
 		
-		$objInput = \Input::getInstance();
+		$objInput = \Contao\Input::getInstance();
 		
 		// MetaModelNotelist object, provides various helper functions
 		$objNotelist = \PCT\CustomElements\Plugins\Notelist\Notelist::getInstance();
@@ -123,7 +123,7 @@ class Formfield extends \Widget
 		$strTemplate = ($bolFormMail == true ? $this->customelements_notelist_mailTpl : $this->customelements_notelist_formTpl);
 		
 		//-- create template object and add template vars
-		$objTemplate = new \FrontendTemplate($strTemplate);
+		$objTemplate = new \Contao\FrontendTemplate($strTemplate);
 		$objTemplate->empty = $GLOBALS['TL_LANG']['customelements_notelist']['emptyInfo'];
 		
 		$arrNotelist = $objNotelist->getNotelist($strSource);
@@ -165,19 +165,19 @@ class Formfield extends \Widget
 				
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objWidgetAmount = new \FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount'));	
+				$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount'));	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$objFormFieldAmount->id,$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				
 				//-- generate update submit
-				$objFormSubmitUpdate = new \FormSubmit();
+				$objFormSubmitUpdate = new \Contao\FormSubmit();
 				$objFormSubmitUpdate->id = $strId.'_update';
 				$objFormSubmitUpdate->name = $strId.'_update';
 				$objFormSubmitUpdate->slabel = $GLOBALS['TL_LANG']['customelements_notelist']['updateLabel'];
 				$entry['input_update'] = $objFormSubmitUpdate->generate();
 				
 				//-- generate remove submit
-				$objFormSubmitRemove = new \FormSubmit();
+				$objFormSubmitRemove = new \Contao\FormSubmit();
 				$objFormSubmitRemove->id = $strId.'_remove';
 				$objFormSubmitRemove->name = $strId.'_remove';
 				$objFormSubmitRemove->slabel = $GLOBALS['TL_LANG']['customelements_notelist']['removeLabel'];
@@ -351,7 +351,7 @@ class Formfield extends \Widget
 		
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
-		$objInput = \Input::getInstance();
+		$objInput = \Contao\Input::getInstance();
 		
 		foreach($arrNotelist as $item_id => $entry)
 		{
@@ -389,7 +389,7 @@ class Formfield extends \Widget
 				
 				// create a psydo amount input field to valide input
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objAmountWidget = new \FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $amount, $strId.'_amount'));
+				$objAmountWidget = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $amount, $strId.'_amount'));
 				$objAmountWidget->validate();
 				if($objAmountWidget->hasErrors())
 				{
@@ -450,7 +450,7 @@ class Formfield extends \Widget
 			return array();
 		}
 		
-		$objRow = \Database::getInstance()->prepare("SELECT * FROM ".$arrEntry['source']." WHERE id=?")->limit(1)->execute($arrEntry['item_id']);
+		$objRow = \Contao\Database::getInstance()->prepare("SELECT * FROM ".$arrEntry['source']." WHERE id=?")->limit(1)->execute($arrEntry['item_id']);
 		if($objRow->numRows < 1)
 		{
 			return array();

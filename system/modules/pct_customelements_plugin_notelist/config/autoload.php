@@ -18,7 +18,7 @@ $path = 'system/modules/pct_customelements_plugin_notelist';
 /**
  * Register the namespaces
  */
-ClassLoader::addNamespaces(array
+\Contao\ClassLoader::addNamespaces(array
 (
 	'PCT\CustomElements',
 ));
@@ -27,7 +27,7 @@ ClassLoader::addNamespaces(array
 /**
  * Register the classes
  */
-ClassLoader::addClasses(array
+\Contao\ClassLoader::addClasses(array
 (
 	'PCT\CustomElements\Attributes\Notelist'			=> $path.'/PCT/CustomElements/Attributes/Notelist/Notelist.php',
 	'PCT\CustomElements\Filters\Notelist'				=> $path.'/PCT/CustomElements/Filters/Notelist/Notelist.php',
@@ -43,7 +43,7 @@ ClassLoader::addClasses(array
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
+\Contao\TemplateLoader::addFiles(array
 (
 	'form_notelist_customelements'				=> $path.'/templates',
 	'mail_notelist_customelements'				=> $path.'/templates',

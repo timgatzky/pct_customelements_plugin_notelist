@@ -33,10 +33,10 @@ $objDcaHelper->addSubpalette('allowNotelistVariants',array('notelistVariants'));
 
 if($objDcaHelper->getActiveRecord()->type == $strType)
 {
-	if(\Input::get('act') == 'edit' && \Input::get('table') == $objDcaHelper->getTable())
+	if(\Contao\Input::get('act') == 'edit' && \Contao\Input::get('table') == $objDcaHelper->getTable())
 	{
 		// Show template info
-		\Message::addInfo(sprintf($GLOBALS['TL_LANG']['PCT_CUSTOMCATALOG']['MSC']['templateInfo_attribute'], 'customelement_attr_notelist'));
+		\Contao\Message::addInfo(sprintf($GLOBALS['TL_LANG']['PCT_CUSTOMCATALOG']['MSC']['templateInfo_attribute'], 'customelement_attr_notelist'));
 	}
 	
 	$GLOBALS['TL_DCA'][$objDcaHelper->getTable()]['fields']['defaultValue']['inputType'] = 'select';

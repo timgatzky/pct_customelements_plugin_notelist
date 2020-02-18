@@ -95,7 +95,7 @@ class Variants
 				$strKeyField = $arrFieldDef['tabletree']['keyField'] ?: $objAttribute->get('tag_key') ?: 'id';
 				$strSorting = $arrFieldDef['tabletree']['sortingField'] ?: $objAttribute->get('tag_sorting');
 				
-				$objResult = \Database::getInstance()->prepare("SELECT * FROM ".$strSource." WHERE id IN(".implode(',', $varValue).")".($strSorting ? " ORDER BY ".$strSorting:"") )->execute();
+				$objResult = \Contao\Database::getInstance()->prepare("SELECT * FROM ".$strSource." WHERE id IN(".implode(',', $varValue).")".($strSorting ? " ORDER BY ".$strSorting:"") )->execute();
 				if($objResult->numRows < 1)
 				{
 					return null;
@@ -119,7 +119,7 @@ class Variants
 				unset($arrFieldDef['options_callback']);
 				$objWidget = new $strClass($strClass::getAttributesFromDca($arrFieldDef, $arrFieldDef['name'], $arrFieldDef['value']));
 				
-				$objDC = new \DC_Table($arrFieldDef['source']);
+				$objDC = new \Contao\DC_Table($arrFieldDef['source']);
 				$objDC->field = $objAttribute->get('alias');
 				$arrOptions = $objAttribute->getOptions($objDC);
 				
@@ -141,7 +141,7 @@ class Variants
 				{
 					foreach($GLOBALS['TL_HOOKS']['CUSTOMELEMENTNOTELIST']['loadFormField'] as $callback)
 					{
-						return \System::importStatic($callback[0])->{$callback[1]}($arrFieldDef,$objAttribute);
+						return \Contao\System::importStatic($callback[0])->{$callback[1]}($arrFieldDef,$objAttribute);
 					}
 				}
 				return null;

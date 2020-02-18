@@ -61,7 +61,7 @@ class Hooks
 		{
 			foreach($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['addItem'] as $callback)
 			{
-				$arrSession = \System::importStatic($callback[0])->{$callback[1]}($arrSession,$strSource,$intItem,$intAmount,$arrVariants);
+				$arrSession = \Contao\System::importStatic($callback[0])->{$callback[1]}($arrSession,$strSource,$intItem,$intAmount,$arrVariants);
 			}
 		}
 		
@@ -81,7 +81,7 @@ class Hooks
 		{
 			foreach($GLOBALS['CUSTOMELEMENTNOTELIST_HOOKS']['removeItem'] as $callback)
 			{
-				\System::importStatic($callback[0])->{$callback[1]}($arrSession,$strSource,$intItem);
+				\Contao\System::importStatic($callback[0])->{$callback[1]}($arrSession,$strSource,$intItem);
 			}
 		}
 	}

@@ -27,10 +27,10 @@ class TableHelper extends \Contao\Backend
 	/**
 	 * 
 	 */
-	public function getSources(\DataContainer $objDC)
+	public function getSources($objDC)
 	{
 		$arrReturn = array();
-		$objDatabase = \Database::getInstance();
+		$objDatabase = \Contao\Database::getInstance();
 		
 		$objCEs = $objDatabase->prepare("SELECT * FROM tl_pct_customelement WHERE alias!=''")->execute();
 		if($objCEs->numRows > 0)
@@ -71,7 +71,7 @@ class TableHelper extends \Contao\Backend
 	 * @param object
 	 * @return array
 	 */
-	public function getAttributesBySelection(\DataContainer $objDC)
+	public function getAttributesBySelection($objDC)
 	{
 		if(strlen($objDC->activeRecord->customelements_notelist_source) < 1)
 		{
@@ -113,9 +113,9 @@ class TableHelper extends \Contao\Backend
 	 * @param object
 	 * @return array
 	 */
-	public function getAttributes(\DataContainer $objDC)
+	public function getAttributes($objDC)
 	{
-		$objCC = \Database::getInstance()->prepare("SELECT * FROM tl_pct_customelement WHERE id=(SELECT pid FROM tl_pct_customelement_group WHERE id=?)")->limit(1)->execute($objDC->activeRecord->pid);
+		$objCC = \Contao\Database::getInstance()->prepare("SELECT * FROM tl_pct_customelement WHERE id=(SELECT pid FROM tl_pct_customelement_group WHERE id=?)")->limit(1)->execute($objDC->activeRecord->pid);
 		
 		$objAttributes = \PCT\CustomElements\Core\AttributeFactory::fetchMultipleByCustomElement($objCC->id);
 		if($objAttributes === null)

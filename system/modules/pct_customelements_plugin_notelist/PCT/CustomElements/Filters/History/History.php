@@ -32,7 +32,7 @@ class History extends \PCT\CustomElements\Filter
 	 */	
 	public function getQueryOptionCallback()
 	{
-		$arrSession = \Session::getInstance()->get('customelementnotelist_history');
+		$arrSession = \Contao\Session::getInstance()->get('customelementnotelist_history');
 		
 		$objModule = $this->getCustomCatalog()->getOrigin();
 		$strTable = $this->getTable();

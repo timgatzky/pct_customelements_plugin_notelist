@@ -1,3 +1,7 @@
+### 1.4.0
+Update: Rebuild on Contao namespaces (#19)
+Update: Contao 4.9 LTS compatibility
+
 ### 1.3.5
 Update: tl_form_field.customelements_notelist_source is now a chosen select (#17)
 

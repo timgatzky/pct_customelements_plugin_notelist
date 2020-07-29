@@ -249,6 +249,45 @@ class Notelist extends \Contao\Controller
 					case 'count':
 						return count($objNotelist->getNotelist($element[2]));
 						break;
+					case 'values':
+						$arrNotelist = $objNotelist->getNotelist($element[2]);
+						if( empty($arrNotelist) === true )
+						{
+							return '';
+						}
+
+						$objDatabase = \Contao\Database::getInstance();
+
+						$strField = $element[3];
+						if( $objDatabase->fieldExists($strField,$element[2]) === false )
+						{
+							\Contao\System::log('Field '.$strField.' does not exist in table '.$element[2],__METHOD__,\TL_ERROR);
+							return '';
+						}
+						
+						// collect items
+						$arrIds = array();
+						foreach($arrNotelist as $data)
+						{
+							$arrIds[] = $data['item_id'];
+						}
+
+						$arrIds = \array_filter( \array_unique($arrIds) );
+						if( empty($arrIds) === true )
+						{
+							return '';
+						}
+						
+						// fetch entries
+						$objResult = \Contao\Database::getInstance()->prepare("SELECT * FROM ".$element[2]." WHERE id IN(".\implode(',',$arrIds).")")->execute();
+						if($objResult->numRows < 1)
+						{
+							return '';
+						}
+						
+						return \implode(',', \array_unique( \array_filter($objResult->fetchEach( $strField )) ));
+					
+						break;
 				}
 				break;
 			

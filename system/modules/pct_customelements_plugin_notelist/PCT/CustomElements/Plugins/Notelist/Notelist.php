@@ -279,7 +279,7 @@ class Notelist extends \Contao\Controller
 						}
 						
 						// fetch entries
-						$objResult = \Contao\Database::getInstance()->prepare("SELECT * FROM ".$element[2]." WHERE id IN(".\implode(',',$arrIds).")")->execute();
+						$objResult = $objDatabase->prepare("SELECT * FROM ".$element[2]." WHERE id IN(".\implode(',',$arrIds).")")->execute();
 						if($objResult->numRows < 1)
 						{
 							return '';

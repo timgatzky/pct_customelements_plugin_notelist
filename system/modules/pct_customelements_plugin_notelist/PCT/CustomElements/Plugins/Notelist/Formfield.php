@@ -166,7 +166,7 @@ class Formfield extends \Contao\Widget
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
 				$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount'));	
-				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$objFormFieldAmount->id,$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
+				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				
 				//-- generate update submit
@@ -352,7 +352,6 @@ class Formfield extends \Contao\Widget
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
 		$objInput = \Contao\Input::getInstance();
-		
 		foreach($arrNotelist as $item_id => $entry)
 		{
 			if($entry['item_id'] < 1)
@@ -361,15 +360,13 @@ class Formfield extends \Contao\Widget
 			}
 			
 			$strId = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$entry['source'],$entry['item_id'],$entry['attr_id']);
-						
 			//-- check for post action
 			// update item
-			if(strlen($_POST[$strId.'_update']) > 0)
+			if( isset($_POST[$strId.'_update']) )
 			{
 				$blnUpdate = false;
 				
 				$amount = $objInput->post($strId.'_amount');
-				
 				if($entry['amount'] != $amount)
 				{
 					$blnUpdate = true;
@@ -416,7 +413,7 @@ class Formfield extends \Contao\Widget
 				
 			}
 			// remove item
-			else if($_POST[$strId.'_remove'])
+			else if( isset($_POST[$strId.'_remove']) )
 			{
 				// remove item and reload
 				$objNotelist->removeItem($entry['source'],$entry['item_id']);

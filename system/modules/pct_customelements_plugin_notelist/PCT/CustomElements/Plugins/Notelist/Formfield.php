@@ -484,7 +484,7 @@ class Formfield extends \Contao\Widget
 			$objTplAttribute->label = $objAttribute->get('title') ?: $objAttribute->get('alias') ?: $objAttribute->get('id');
 			$objTplAttribute->name = $strName;
 			
-			$arrReturn[] = $objTplAttribute;
+			$arrReturn[$strName] = $objTplAttribute;
 		}
 		
 		return $arrReturn;

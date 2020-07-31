@@ -302,7 +302,7 @@ class Notelist extends \Contao\Controller
 	 * Add the notelist form to a template
 	 *
 	 */
-	public function addNotelistToTemplate(\FrontendTemplate $objTemplate, \stdClass $objConfig)
+	public function addNotelistToTemplate($objTemplate, $objConfig)
 	{
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		

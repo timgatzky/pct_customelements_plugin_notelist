@@ -335,15 +335,9 @@ class Notelist extends \Contao\Controller
 		$objTemplate->updateName = $strFormID.'_update'; #'UPDATE_NOTELIST_ITEM';
 		$objTemplate->remove = $GLOBALS['TL_LANG']['customelements_notelist']['removeLabel'];
 		$objTemplate->removeName = $strFormID.'_remove'; #'REMOVE_NOTELIST_ITEM';
-		
 		// get item from notelist and set amount value
 		$arrItem = $this->getItem($strSource,$arrRow['id']);
 		$amount = ($arrItem['amount'] ? $arrItem['amount'] : $GLOBALS['customelements_notelist']['default_amount']);
-		if(\Contao\Input::post($strFormID.'_amount'))
-		{
-			$amount = \Contao\Input::post($strFormID.'_amount');
-		}
-		
 		// create amount widget
 		$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
 		$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strFormID.'_amount', $amount, $strFormID.'_amount'));	

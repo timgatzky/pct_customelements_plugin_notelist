@@ -1,3 +1,9 @@
+### 1.5.0
+Fixed: Amount field was not unique and did not update (#21)
+Fixed: Notelist did not update in form field
+Added: New inserttag: {{customcatalognotelist::values::TABLE-OR-ID::ATTRIBUTE-ALIAS}} to return all values of the attribut stored in the notelist (#22)
+Update: Templates: Field aaray ['fields'] is now associate by field names (#23)
+
 ### 1.4.0
 Update: Rebuild on Contao namespaces (#19)
 Update: Contao 4.9 LTS compatibility

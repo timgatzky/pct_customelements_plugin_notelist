@@ -1,3 +1,6 @@
+### 1.5.1
+Fixed: Missing values from tags variant fields in form_, mail_ notelist (#25)
+
 ### 1.5.0
 Fixed: Amount field was not unique and did not update (#21)
 Fixed: Notelist did not update in form field

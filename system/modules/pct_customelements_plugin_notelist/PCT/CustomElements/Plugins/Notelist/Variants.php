@@ -79,6 +79,12 @@ class Variants
 				$objWidget = new $strClass($strClass::getAttributesFromDca($arrFieldDef, $arrFieldDef['name'], $arrFieldDef['value']));
 				$objRow = $objAttribute->get('objActiveRecord');
 				$varValue = deserialize($objRow->{$objAttribute->get('alias')});
+				
+				if( isset($objAttribute->value) )
+				{
+					$varValue = $objAttribute->value;
+				}
+				
 				if(!is_array($varValue))
 				{
 					$varValue = array_filter(array($varValue),'strlen');

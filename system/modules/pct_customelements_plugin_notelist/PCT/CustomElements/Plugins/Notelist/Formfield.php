@@ -196,7 +196,6 @@ class Formfield extends \Contao\Widget
 					$arrTemplateVariants = array();
 		
 					$objVariants = \PCT\CustomElements\Plugins\Notelist\Variants::getInstance();
-			
 					// generate variants
 					foreach($entry['variants'] as $strName => $arrAttribute)
 					{
@@ -205,6 +204,8 @@ class Formfield extends \Contao\Widget
 						{
 							continue;
 						}
+						
+						$arrAttribute['value'] = \deserialize($arrAttribute['value']);
 						
 						$strId = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$entry['source'],$entry['item_id'],$arrAttribute['id']);
 						
@@ -217,7 +218,10 @@ class Formfield extends \Contao\Widget
 							'source'	=> $entry['source'],
 						);
 						$arrFieldDef = array_merge($objVariantAttr->getFieldDefinition(),$arrFieldDef);
-				
+						
+						// set value from session
+						$objVariantAttr->value = $arrAttribute['value'];
+						
 						$objWidget = $objVariants->loadFormField($arrFieldDef,$objVariantAttr);
 						if(!$objWidget)
 						{
@@ -233,7 +237,6 @@ class Formfield extends \Contao\Widget
 							'attribute' => $objVariantAttr,
 						);
 					}
-					
 					$entry['variants'] = $arrTemplateVariants;
 				}
 			
@@ -270,6 +273,8 @@ class Formfield extends \Contao\Widget
 						{
 							continue;
 						}
+
+						$arrAttribute['value'] = \deserialize($arrAttribute['value']);
 						
 						$strId = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$entry['source'],$entry['item_id'],$arrAttribute['id']);
 						
@@ -282,7 +287,10 @@ class Formfield extends \Contao\Widget
 							'source'	=> $entry['source'],
 						);
 						$arrFieldDef = array_merge($objVariantAttr->getFieldDefinition(),$arrFieldDef);
-				
+						
+						// set value from session
+						$objVariantAttr->value = $arrAttribute['value'];
+
 						$objWidget = $objVariants->loadFormField($arrFieldDef,$objVariantAttr);
 						if(!$objWidget)
 						{

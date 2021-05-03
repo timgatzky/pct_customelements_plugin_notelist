@@ -251,6 +251,7 @@ class Notelist extends \Contao\Controller
 						break;
 					case 'values':
 						$arrNotelist = $objNotelist->getNotelist($element[2]);
+						
 						if( empty($arrNotelist) === true )
 						{
 							return '';
@@ -356,7 +357,7 @@ class Notelist extends \Contao\Controller
 			{
 				$arrNotelistVariants = array($arrNotelistVariants);
 			}
-			
+
 			foreach($arrNotelistVariants as $intVariantAttrId)
 			{
 				$objVariantAttr = \PCT\CustomElements\Core\AttributeFactory::findById($intVariantAttrId);
@@ -364,7 +365,6 @@ class Notelist extends \Contao\Controller
 				{
 					continue;
 				}
-				
 				$objVariantAttr->generate();
 				$objVariantAttr->set('objActiveRecord',$objAttr->get('objActiveRecord'));
 				$objVariantAttr->set('objOrigin',$objAttr->get('objOrigin'));
@@ -385,6 +385,7 @@ class Notelist extends \Contao\Controller
 				$arrFieldDef = array_merge($objVariantAttr->getFieldDefinition(),$arrFieldDef);
 				
 				$objWidget = \PCT\CustomElements\Plugins\Notelist\Variants::getInstance()->loadFormField($arrFieldDef,$objVariantAttr);
+				
 				if(!$objWidget)
 				{
 					continue;

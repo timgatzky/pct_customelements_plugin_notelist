@@ -1,3 +1,6 @@
+### 1.6.0
+New: Support for Contao 4.13
+
 ### 1.5.1
 Fixed: Missing values from tags variant fields in form_, mail_ notelist (#25)
 

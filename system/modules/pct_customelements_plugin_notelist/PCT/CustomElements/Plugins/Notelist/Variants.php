@@ -17,6 +17,8 @@
  */
 namespace PCT\CustomElements\Plugins\NoteList;
 
+use Contao\StringUtil;
+
 /**
  * Class file
  * Variants
@@ -78,7 +80,7 @@ class Variants
 				
 				$objWidget = new $strClass($strClass::getAttributesFromDca($arrFieldDef, $arrFieldDef['name'], $arrFieldDef['value']));
 				$objRow = $objAttribute->get('objActiveRecord');
-				$varValue = deserialize($objRow->{$objAttribute->get('alias')});
+				$varValue = StringUtil::deserialize($objRow->{$objAttribute->get('alias')});
 				
 				if( isset($objAttribute->value) )
 				{

@@ -138,7 +138,8 @@ class Formfield extends \Contao\Widget
 		//-- create template object and add template vars
 		$objTemplate = new \Contao\FrontendTemplate($strTemplate);
 		$objTemplate->empty = $GLOBALS['TL_LANG']['customelements_notelist']['emptyInfo'];
-		
+		$objTemplate->entries = array();
+
 		$arrNotelist = $objNotelist->getNotelist($strSource);
 		if(empty($arrNotelist))
 		{

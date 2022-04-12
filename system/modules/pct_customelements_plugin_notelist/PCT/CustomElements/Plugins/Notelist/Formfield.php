@@ -24,10 +24,7 @@ namespace PCT\CustomElements\Plugins\Notelist;
 
 use Contao\Input;
 use Contao\StringUtil;
-use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
-use \PCT\CustomElements\Plugins\CustomCatalog\Core\CustomCatalogFactory as CustomCatalogFactory;
-use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
-
+use Contao\Widget;
 
 /**
  * Class file
@@ -179,7 +176,7 @@ class Formfield extends \Contao\Widget
 				
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount'));	
+				$objWidgetAmount = new \Contao\FormTextField( Widget::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				

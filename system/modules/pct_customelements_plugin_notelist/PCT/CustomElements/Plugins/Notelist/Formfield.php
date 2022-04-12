@@ -30,7 +30,7 @@ use Contao\Widget;
  * Class file
  * Formfield
  */
-class Formfield extends \Contao\Widget
+class Formfield extends Widget
 {
 	/**
 	 * @var string
@@ -176,7 +176,7 @@ class Formfield extends \Contao\Widget
 				
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objWidgetAmount = new \Contao\FormTextField( Widget::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
+				$objWidgetAmount = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				
@@ -409,7 +409,7 @@ class Formfield extends \Contao\Widget
 				
 				// create a psydo amount input field to valide input
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objAmountWidget = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $amount, $strId.'_amount'));
+				$objAmountWidget = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $amount, $strId.'_amount') );
 				$objAmountWidget->validate();
 				if($objAmountWidget->hasErrors())
 				{

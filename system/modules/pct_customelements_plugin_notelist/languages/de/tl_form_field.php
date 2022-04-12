@@ -17,7 +17,7 @@
 /**
  * Form fields
  */
-$GLOBALS['TL_LANG']['FFL']['customelements_notelist']   	 				= array('Merkliste, CustomElements', 'Verschicken Sie eine Merkliste per Mail');
+$GLOBALS['TL_LANG']['FFL']['customelements_notelist']   	 				= array('Merkliste', 'Verschicken Sie eine Merkliste per Mail');
 
 /**
  * Legends

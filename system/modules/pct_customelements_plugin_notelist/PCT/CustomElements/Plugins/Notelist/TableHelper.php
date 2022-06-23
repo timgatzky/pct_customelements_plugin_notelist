@@ -25,43 +25,21 @@ namespace PCT\CustomElements\Plugins\Notelist;
 class TableHelper extends \Contao\Backend
 {
 	/**
-	 * 
+	 * Return active customcatalogs as sources
 	 */
-	public function getSources($objDC)
+	public function getSources()
 	{
 		$arrReturn = array();
 		$objDatabase = \Contao\Database::getInstance();
 		
-		$objCEs = $objDatabase->prepare("SELECT * FROM tl_pct_customelement WHERE alias!=''")->execute();
-		if($objCEs->numRows > 0)
-		{
-			while($objCEs->next())
-			{
-				if($objCEs->isCTE)
-				{
-					$arrReturn['ce::tl_content::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.'] (content)';
-				}
-				
-				if($objCEs->isFMD)
-				{
-					$arrReturn['ce::tl_module::'.$objCEs->id] = 'CustomElement: '.$objCEs->title . ' ['.$objCEs->id.'] (module)';
-				}
-				
-				// fetch customcatalogs
-				$objCCs = $objDatabase->prepare("SELECT * FROM tl_pct_customcatalog WHERE active=1 AND pid=?")->execute($objCEs->id);
-				if($objCCs->numRows < 1)
-				{
-					continue;
-				}
-				
-				while($objCCs->next())
-				{
-					$strTable =  ($objCCs->mode == 'new' ? $objCCs->tableName : $objCCs->existingTable);
-					$arrReturn['cc::'.$strTable.'::'.$objCCs->id] = 'CustomCatalog: '.$objCCs->title . ' ['.$objCCs->id.']';
-				}
-			}
-		};
+		// fetch customcatalogs
+		$objCCs = $objDatabase->prepare("SELECT * FROM tl_pct_customcatalog WHERE active=1")->execute();
 		
+		while($objCCs->next())
+		{
+			$strTable =  ($objCCs->mode == 'new' ? $objCCs->tableName : $objCCs->existingTable);
+			$arrReturn['cc::'.$strTable.'::'.$objCCs->id] = 'CustomCatalog: '.$objCCs->title . ' ['.$objCCs->id.']';
+		}
 		return $arrReturn;
 	}
 	

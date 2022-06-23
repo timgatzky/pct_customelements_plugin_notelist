@@ -21,16 +21,16 @@ namespace PCT\CustomElements\Plugins\Notelist;
 /**
  * Imports
  */
-use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
-use \PCT\CustomElements\Plugins\CustomCatalog\Core\CustomCatalogFactory as CustomCatalogFactory;
-use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
 
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\Widget;
 
 /**
  * Class file
  * Formfield
  */
-class Formfield extends \Contao\Widget
+class Formfield extends Widget
 {
 	/**
 	 * @var string
@@ -95,6 +95,18 @@ class Formfield extends \Contao\Widget
 	 */
 	public function parse($blnForMail=false)
 	{
+		if( TL_MODE == 'BE' )
+		{
+			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
+			
+			$arrSource = \explode('::', $this->customelements_notelist_source);
+			$strSource = $arrSource[1];
+			
+			$objTemplate->wildcard = $strSource;
+			#$objTemplate->id = $this->id;
+			#$objTemplate->link = $this->name;
+			return $objTemplate->parse();
+		}	
 		return $this->render($blnForMail);
 	}
 	
@@ -114,8 +126,6 @@ class Formfield extends \Contao\Widget
 		$arrSource = explode('::', $this->customelements_notelist_source);
 		$strSource = $arrSource[1];
 		
-		$objInput = \Contao\Input::getInstance();
-		
 		// MetaModelNotelist object, provides various helper functions
 		$objNotelist = \PCT\CustomElements\Plugins\Notelist\Notelist::getInstance();
 	
@@ -125,7 +135,8 @@ class Formfield extends \Contao\Widget
 		//-- create template object and add template vars
 		$objTemplate = new \Contao\FrontendTemplate($strTemplate);
 		$objTemplate->empty = $GLOBALS['TL_LANG']['customelements_notelist']['emptyInfo'];
-		
+		$objTemplate->entries = array();
+
 		$arrNotelist = $objNotelist->getNotelist($strSource);
 		if(empty($arrNotelist))
 		{
@@ -133,7 +144,7 @@ class Formfield extends \Contao\Widget
 		}
 		
 		// visible fields
-		$arrVisibles = deserialize($this->customelements_notelist_visibles);
+		$arrVisibles = StringUtil::deserialize($this->customelements_notelist_visibles);
 		
 		// prepare template for regular FE output
 		$arrTmp = array();
@@ -165,7 +176,7 @@ class Formfield extends \Contao\Widget
 				
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount'));	
+				$objWidgetAmount = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				
@@ -205,7 +216,7 @@ class Formfield extends \Contao\Widget
 							continue;
 						}
 						
-						$arrAttribute['value'] = \deserialize($arrAttribute['value']);
+						$arrAttribute['value'] = StringUtil::deserialize($arrAttribute['value']);
 						
 						$strId = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$entry['source'],$entry['item_id'],$arrAttribute['id']);
 						
@@ -274,7 +285,7 @@ class Formfield extends \Contao\Widget
 							continue;
 						}
 
-						$arrAttribute['value'] = \deserialize($arrAttribute['value']);
+						$arrAttribute['value'] =  StringUtil::deserialize($arrAttribute['value']);
 						
 						$strId = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$entry['source'],$entry['item_id'],$arrAttribute['id']);
 						
@@ -317,6 +328,11 @@ class Formfield extends \Contao\Widget
 		}
 		$arrNotelist = $arrTmp;
 		unset($arrTmp);
+
+		if( empty($arrNotelist) || !\is_array($arrNotelist) )
+		{
+			$arrNotelist = array();
+		}
 		
 		$objTemplate->entries = $arrNotelist;
 		$objTemplate->total = count($arrNotelist);
@@ -359,7 +375,6 @@ class Formfield extends \Contao\Widget
 		
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
-		$objInput = \Contao\Input::getInstance();
 		foreach($arrNotelist as $item_id => $entry)
 		{
 			if($entry['item_id'] < 1)
@@ -374,7 +389,7 @@ class Formfield extends \Contao\Widget
 			{
 				$blnUpdate = false;
 				
-				$amount = $objInput->post($strId.'_amount');
+				$amount = Input::post($strId.'_amount');
 				if($entry['amount'] != $amount)
 				{
 					$blnUpdate = true;
@@ -384,9 +399,9 @@ class Formfield extends \Contao\Widget
 				{
 					foreach($entry['variants'] as $strName => $arrAttribute)
 					{
-						if($objInput->post($strName) && $arrAttribute['value'] != $objInput->post($strName) )
+						if(Input::post($strName) && $arrAttribute['value'] != Input::post($strName) )
 						{
-							$entry['variants'][$strName]['value'] = $objInput->post($strName);
+							$entry['variants'][$strName]['value'] = Input::post($strName);
 							$blnUpdate = true;
 						}
 					}
@@ -394,7 +409,7 @@ class Formfield extends \Contao\Widget
 				
 				// create a psydo amount input field to valide input
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objAmountWidget = new \Contao\FormTextField($this->prepareForWidget($arrData, $strId.'_amount', $amount, $strId.'_amount'));
+				$objAmountWidget = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $amount, $strId.'_amount') );
 				$objAmountWidget->validate();
 				if($objAmountWidget->hasErrors())
 				{

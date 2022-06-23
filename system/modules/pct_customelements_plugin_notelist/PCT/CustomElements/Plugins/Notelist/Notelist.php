@@ -21,9 +21,11 @@ namespace PCT\CustomElements\Plugins\Notelist;
 /**
  * Imports
  */
+
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
 use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
-use \PCT\CustomElements\Plugins\CustomCatalog\Core\CustomCatalogFactory as CustomCatalogFactory;
-use \PCT\CustomElements\Core\CustomElementFactory as CustomElementFactory;
 
 
 /**
@@ -82,7 +84,7 @@ class Notelist extends \Contao\Controller
 	public function setItem($varSource,$intItem,$intAmount=0,$arrVariants=array(),$blnReload=true,$arrEntry=array())
 	{
 		// get Session
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');
 		$arrSession = $objSession->get($this->strSession);
 		
 		$time = time();
@@ -120,7 +122,7 @@ class Notelist extends \Contao\Controller
 	public function getItem($varSource,$intItem)
 	{
 		// get Session
-		$arrSession = \Contao\Session::getInstance()->get($this->strSession);
+		$arrSession = System::getContainer()->get('session')->get($this->strSession);
 		return $arrSession[$varSource][$intItem];
 	}
 	
@@ -134,7 +136,7 @@ class Notelist extends \Contao\Controller
 	public function removeItem($varSource,$intItem,$blnReload=true)
 	{
 		// get Session
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');
 		$arrSession = $objSession->get($this->strSession);
 		
 		unset($arrSession[$varSource][$intItem]);
@@ -161,15 +163,10 @@ class Notelist extends \Contao\Controller
 	public function getNotelist($varSource=null)
 	{
 		// Session
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');
 		$arrSession = $objSession->get($this->strSession);
 		
-		if(!$varSource)
-		{
-			return $arrSession ?: array();
-		}
-		
-		if(!is_array($arrSession[$varSource]) || empty($arrSession[$varSource]))
+		if( !isset($arrSession[$varSource]) || !is_array($arrSession[$varSource]) || empty($arrSession[$varSource]))
 		{
 			return array();
 		}
@@ -185,7 +182,7 @@ class Notelist extends \Contao\Controller
 	public function getNotelists()
 	{
 		// Session
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');
 		$arrSession = $objSession->get($this->strSession);
 		if(!is_array($arrSession))
 		{
@@ -307,8 +304,7 @@ class Notelist extends \Contao\Controller
 	{
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
-		$objInput = \Contao\Input::getInstance();
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');;
 		
 		$strSource = $objConfig->source;
 		
@@ -352,7 +348,7 @@ class Notelist extends \Contao\Controller
 		{
 			$arrTemplateVariants = array();
 			
-			$arrNotelistVariants = deserialize($objAttr->get('notelistVariants')) ?: array();
+			$arrNotelistVariants = StringUtil::deserialize($objAttr->get('notelistVariants')) ?: array();
 			if(!is_array($arrNotelistVariants))
 			{
 				$arrNotelistVariants = array($arrNotelistVariants);
@@ -401,13 +397,13 @@ class Notelist extends \Contao\Controller
 				);
 				
 				// check if a variant field is submitted and store in array
-				if($objInput->post('FORM_SUBMIT') == $strFormID && $objInput->post($objWidget->name))
+				if( Input::post('FORM_SUBMIT') == $strFormID && Input::post($objWidget->name) )
 				{
 					$arrVariants[$strName] = array
 					(
 						'id'		=> $objVariantAttr->get('id'),
 						'name' 		=> $objVariantAttr->get('alias'),
-						'value'		=> $objInput->post($objWidget->name),
+						'value'		=> Input::post($objWidget->name),
 					);
 				}
 			}
@@ -417,14 +413,14 @@ class Notelist extends \Contao\Controller
 		}
 		
 		//-- form submits
-		if($objInput->post('FORM_SUBMIT') == $strFormID)
+		if( Input::post('FORM_SUBMIT') == $strFormID )
 		{
-			$intAmount = $objInput->post($strFormID.'_amount');
-			$intItem = $objInput->post('ITEM_ID');
-			$strSource = $objInput->post('SOURCE');
+			$intAmount = Input::post($strFormID.'_amount');
+			$intItem = Input::post('ITEM_ID');
+			$strSource = Input::post('SOURCE');
 			
 			// insert or update an item
-			if( strlen($objInput->post($objTemplate->submitName)) > 0 || strlen($objInput->post($objTemplate->updateName)) > 0 )
+			if( strlen(Input::post($objTemplate->submitName)) > 0 || strlen(Input::post($objTemplate->updateName)) > 0 )
 			{
 				// validate amount
 				$objWidgetAmount->validate();
@@ -435,7 +431,7 @@ class Notelist extends \Contao\Controller
 				else
 				{
 					// toggle status message
-					if(strlen($objInput->post($objTemplate->updateName)) > 0)	
+					if(strlen(Input::post($objTemplate->updateName)) > 0)	
 					{
 						$objTemplate->statusMessage = $GLOBALS['TL_LANG']['customelements_notelist']['itemUpdated'];
 						
@@ -502,7 +498,7 @@ class Notelist extends \Contao\Controller
 	public function remove($strSource)
 	{
 		// Session
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');;
 		$arrSession = $objSession->get($this->strSession);
 		if(!is_array($arrSession[$strSource]))
 		{
@@ -564,7 +560,7 @@ class Notelist extends \Contao\Controller
 		$objEntry = $objCC->findPublishedItemByIdOrAlias(\Contao\Input::get($GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']),$strLanguage);
 		
 		$time = time();
-		$objSession = \Contao\Session::getInstance();
+		$objSession = System::getContainer()->get('session');;
 		
 		// get the current session
 		$arrSession = $objSession->get('customelementnotelist_history');

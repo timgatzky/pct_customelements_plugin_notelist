@@ -16,7 +16,7 @@
  * Constants
  */ 
 define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');
-define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.6.0');
+define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.6.1');
 
 /**
  * Register plugin
@@ -32,7 +32,7 @@ $GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
  * Stop here if CE Version is to low or notelist is not active
  */
 $blnInitialize = true;
-if( TL_MODE == 'BE' &&  !empty(\Contao\Session::getInstance()->getData()))
+if( TL_MODE == 'BE' && \Contao\System::getContainer()->get('session')->getBag('contao_backend') )
 {
 	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && !in_array(\Contao\Input::get('do'), array('repository_manager','composer')) )
 	{

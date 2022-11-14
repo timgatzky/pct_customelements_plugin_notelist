@@ -31,7 +31,9 @@ $GLOBALS['TL_DCA']['tl_pct_customelement_attribute']['palettes'][$strType] = $ob
  */
 $objDcaHelper->addSubpalette('allowNotelistVariants',array('notelistVariants'));
 
-if($objDcaHelper->getActiveRecord()->type == $strType)
+$objActiveRecord = $objDcaHelper->getActiveRecord();
+
+if( $objActiveRecord !== null && $objActiveRecord->type == $strType)
 {
 	if(\Contao\Input::get('act') == 'edit' && \Contao\Input::get('table') == $objDcaHelper->getTable())
 	{

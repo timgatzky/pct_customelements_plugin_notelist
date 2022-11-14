@@ -1,3 +1,6 @@
+### 1.6.2
+Update: General PHP8 updates (#35)
+
 ### 1.6.1
 Fixed: count() error under PHP8 when opening a formfield
 Update: Changed formfield label to "Notelist" (#33)

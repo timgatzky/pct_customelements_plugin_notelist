@@ -123,7 +123,7 @@ class Notelist extends \Contao\Controller
 	{
 		// get Session
 		$arrSession = System::getContainer()->get('session')->get($this->strSession);
-		return $arrSession[$varSource][$intItem];
+		return $arrSession[$varSource][$intItem] ?? array();
 	}
 	
 	
@@ -334,10 +334,12 @@ class Notelist extends \Contao\Controller
 		$objTemplate->removeName = $strFormID.'_remove'; #'REMOVE_NOTELIST_ITEM';
 		// get item from notelist and set amount value
 		$arrItem = $this->getItem($strSource,$arrRow['id']);
-		$amount = ($arrItem['amount'] ? $arrItem['amount'] : $GLOBALS['customelements_notelist']['default_amount']);
+		$amount = $arrItem['amount'] ?? $GLOBALS['customelements_notelist']['default_amount'];
 		// create amount widget
 		$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
 		$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strFormID.'_amount', $amount, $strFormID.'_amount'));	
+		$objWidgetAmount->min = 1;
+		$objWidgetAmount->max = 100000;
 		
 		$objTemplate->amountInput = $objWidgetAmount->generate();
 		$objTemplate->amountLabel = sprintf('<label for="ctrl_%s">%s</label>',$objWidgetAmount->id,$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
@@ -465,7 +467,7 @@ class Notelist extends \Contao\Controller
 		}
 				
 		// mark item as being added
-		if($arrItem['amount'])
+		if( isset($arrItem['amount']) )
 		{
 			$objTemplate->added = true;
 		}

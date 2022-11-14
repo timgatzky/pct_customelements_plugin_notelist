@@ -151,9 +151,9 @@ class Formfield extends Widget
 		if(!$bolFormMail)
 		{
 			//-- submits
-			$objTemplate->submit = $GLOBALS['TL_LANG']['metamodels_notelist']['submitLabel'];
-			$objTemplate->remove = $GLOBALS['TL_LANG']['metamodels_notelist']['removeLabel'];
-			$objTemplate->update = $GLOBALS['TL_LANG']['metamodels_notelist']['updateLabel'];
+			$objTemplate->submit = $GLOBALS['TL_LANG']['customelements_notelist']['submitLabel'];
+			$objTemplate->remove = $GLOBALS['TL_LANG']['customelements_notelist']['removeLabel'];
+			$objTemplate->update = $GLOBALS['TL_LANG']['customelements_notelist']['updateLabel'];
 			
 			$i = 0;
 			foreach($arrNotelist as $item_id => $entry)
@@ -161,6 +161,11 @@ class Formfield extends Widget
 				if($entry['item_id'] < 1)
 				{
 					continue;
+				}
+				
+				if( !isset($entry['id']) )
+				{
+					$entry['id'] = $entry['item_id'];
 				}
 				
 				// add classes
@@ -177,7 +182,7 @@ class Formfield extends Widget
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
 				$objWidgetAmount = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
-				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['metamodels_notelist']['amountLabel']);
+				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
 				$entry['input_amount'] = $objWidgetAmount->generate();
 				
 				//-- generate update submit
@@ -202,7 +207,7 @@ class Formfield extends Widget
 				$entry['statusMessage'] = $this->strStatusMessage;
 				
 				//-- variants
-				if(!empty($entry['variants']) && is_array($entry['variants']))
+				if( isset($entry['variants']) && !empty($entry['variants']) && is_array($entry['variants']))
 				{
 					$arrTemplateVariants = array();
 		

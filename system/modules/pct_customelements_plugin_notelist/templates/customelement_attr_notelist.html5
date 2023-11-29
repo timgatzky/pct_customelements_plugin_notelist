@@ -12,7 +12,7 @@
 
 <form method="post" id="<?php echo $this->formID; ?>" action="<?php echo $this->action; ?>">	
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formID; ?>" />
-<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
+<input type="hidden" name="REQUEST_TOKEN" value="<?= \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(); ?>" />
 <input type="hidden" name="ITEM_ID" value="<?php echo $this->itemID; ?>" />
 <input type="hidden" name="SOURCE" value="<?php echo $this->source; ?>" />
 <div class="notelistamount input_container">

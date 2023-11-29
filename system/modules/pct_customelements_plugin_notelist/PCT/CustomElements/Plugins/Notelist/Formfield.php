@@ -74,7 +74,8 @@ class Formfield extends Widget
 	 */
 	public function generate()
 	{
-		if(TL_MODE == 'BE')
+		$request = \Contao\System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### CUSTOMELEMENTS NOTELIST ###';
@@ -95,7 +96,8 @@ class Formfield extends Widget
 	 */
 	public function parse($blnForMail=false)
 	{
-		if( TL_MODE == 'BE' )
+		$request = \Contao\System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
 			

@@ -25,6 +25,7 @@ namespace PCT\CustomElements\Plugins\Notelist;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
+use PCT\CustomElements\Plugins\CustomCatalog\Core\Multilanguage;
 use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
 
 
@@ -260,7 +261,7 @@ class Notelist extends \Contao\Controller
 						$strField = $element[3];
 						if( $objDatabase->fieldExists($strField,$element[2]) === false )
 						{
-							\Contao\System::log('Field '.$strField.' does not exist in table '.$element[2],__METHOD__,\TL_ERROR);
+							\Contao\System::getContainer()->get('monolog.logger.contao.error')->info('Field '.$strField.' does not exist in table '.$element[2]);
 							return '';
 						}
 						
@@ -555,8 +556,7 @@ class Notelist extends \Contao\Controller
 		$strLanguage = '';
 		if( $objCC->get('multilanguage') && ($objModel->customcatalog_filter_actLang || $objCC->get('aliasField') > 0) )
 		{
-			$objMultilanguage = new \PCT\CustomElements\Plugins\CustomCatalog\Core\Multilanguage;
-			$strLanguage = $objMultilanguage->getActiveFrontendLanguage();
+			$strLanguage = Multilanguage::getActiveFrontendLanguage();
 		}
 		
 		// render the regular details page of a customcatalog entry

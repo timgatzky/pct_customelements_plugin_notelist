@@ -343,7 +343,7 @@ class Notelist extends \Contao\Controller
 		$objWidgetAmount->min = 1;
 		$objWidgetAmount->max = 100000;
 		
-		$objTemplate->amountInput = $objWidgetAmount->generate();
+		$objTemplate->amountInput = \str_replace('type="text"', 'type="number"', $objWidgetAmount->generate() );
 		$objTemplate->amountLabel = sprintf('<label for="ctrl_%s">%s</label>',$objWidgetAmount->id,$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
 		
 		//-- variants
@@ -572,8 +572,10 @@ class Notelist extends \Contao\Controller
 			$arrSession = array();
 			$arrSession['createTime'] = $time;
 			$arrSession['tables'] = array();
+			$arrSession['lastTableVisited'] = '';
+			$arrSession['lastItemVisited'] = '';
 		}
-		
+
 		// check if user visited a new entry or remains on the last one visited
 		if($arrSession['lastTableVisited'] != $strTable || $arrSession['lastItemVisited'] != $objEntry->id)
 		{

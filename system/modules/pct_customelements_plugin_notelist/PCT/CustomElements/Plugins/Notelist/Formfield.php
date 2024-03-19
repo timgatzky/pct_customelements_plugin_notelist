@@ -185,7 +185,9 @@ class Formfield extends Widget
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
 				$objWidgetAmount = new \Contao\TextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
-				$entry['input_amount'] = $objWidgetAmount->generate();
+				$entry['input_amount'] = \str_replace('type="text"', 'type="number"', $objWidgetAmount->generate() );
+				
+				
 				
 				//-- generate update submit
 				$objFormSubmitUpdate = new \Contao\FormSubmit();

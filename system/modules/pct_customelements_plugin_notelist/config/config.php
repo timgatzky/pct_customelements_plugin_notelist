@@ -18,8 +18,11 @@ use Contao\System;
 /**
  * Constants
  */ 
-define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');
-define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.7.0');
+if( \defined('PCT_CUSTOMELEMENTS_NOTELIST_VERSION') === false )
+{
+	define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.7.0');
+	define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');	
+}
 
 if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
 {

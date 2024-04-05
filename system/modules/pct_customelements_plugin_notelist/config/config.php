@@ -20,7 +20,7 @@ use Contao\System;
  */ 
 if( \defined('PCT_CUSTOMELEMENTS_NOTELIST_VERSION') === false )
 {
-	define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.7.0');
+	define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','2.0.0');
 	define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');	
 }
 

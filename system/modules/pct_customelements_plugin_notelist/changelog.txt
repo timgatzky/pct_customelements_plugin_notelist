@@ -1,5 +1,7 @@
-### 1.7.0
+### 2.0.0
+Update: Changed amount input field to type "number" (#39)
 Update: General Contao 5 compatibility (#38)
+Update: General PHP8 update (#35)
 Removed: Contao 4.9 compatibility (#38)
 
 ### 1.6.2

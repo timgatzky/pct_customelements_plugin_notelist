@@ -74,7 +74,8 @@ class Formfield extends Widget
 	 */
 	public function generate()
 	{
-		if(TL_MODE == 'BE')
+		$request = \Contao\System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
 			$objTemplate->wildcard = '### CUSTOMELEMENTS NOTELIST ###';
@@ -95,7 +96,8 @@ class Formfield extends Widget
 	 */
 	public function parse($blnForMail=false)
 	{
-		if( TL_MODE == 'BE' )
+		$request = \Contao\System::getContainer()->get('request_stack')->getCurrentRequest();
+		if( $request && \Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request) )
 		{
 			$objTemplate = new \Contao\BackendTemplate('be_wildcard');
 			
@@ -181,9 +183,11 @@ class Formfield extends Widget
 				
 				//-- generate amount input and label and add to entry
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objWidgetAmount = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
+				$objWidgetAmount = new \Contao\TextField( static::getAttributesFromDca($arrData, $strId.'_amount', $entry['amount'], $strId.'_amount') );	
 				$entry['label_amount'] = sprintf('<label for="ctrl_%s">%s</label>',$strId.'_amount',$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
-				$entry['input_amount'] = $objWidgetAmount->generate();
+				$entry['input_amount'] = \str_replace('type="text"', 'type="number"', $objWidgetAmount->generate() );
+				
+				
 				
 				//-- generate update submit
 				$objFormSubmitUpdate = new \Contao\FormSubmit();
@@ -343,7 +347,7 @@ class Formfield extends Widget
 		$objTemplate->total = count($arrNotelist);
 		
 		$strBuffer = $objTemplate->parse();
-		$strBuffer = $this->replaceInsertTags($strBuffer);
+		$strBuffer = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($strBuffer);
 		
 		if($bolFormMail)
 		{
@@ -414,7 +418,7 @@ class Formfield extends Widget
 				
 				// create a psydo amount input field to valide input
 				$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-				$objAmountWidget = new \Contao\FormTextField( static::getAttributesFromDca($arrData, $strId.'_amount', $amount, $strId.'_amount') );
+				$objAmountWidget = new \Contao\TextField( static::getAttributesFromDca($arrData, $strId.'_amount', $amount, $strId.'_amount') );
 				$objAmountWidget->validate();
 				if($objAmountWidget->hasErrors())
 				{

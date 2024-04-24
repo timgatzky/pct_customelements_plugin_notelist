@@ -12,22 +12,13 @@
  * @license     LGPL
  */
 
-
-$path = 'system/modules/pct_customelements_plugin_notelist';
-
-/**
- * Register the namespaces
- */
-\Contao\ClassLoader::addNamespaces(array
-(
-	'PCT\CustomElements',
-));
-
+// path relative from composer directory
+$path = \Contao\System::getContainer()->getParameter('kernel.project_dir').'/vendor/composer/../../system/modules/pct_customelements_plugin_notelist';
 
 /**
  * Register the classes
  */
-\Contao\ClassLoader::addClasses(array
+$classMap = array
 (
 	'PCT\CustomElements\Attributes\Notelist'			=> $path.'/PCT/CustomElements/Attributes/Notelist/Notelist.php',
 	'PCT\CustomElements\Filters\Notelist'				=> $path.'/PCT/CustomElements/Filters/Notelist/Notelist.php',
@@ -37,7 +28,11 @@ $path = 'system/modules/pct_customelements_plugin_notelist';
 	'PCT\CustomElements\Plugins\Notelist\Variants'		=> $path.'/PCT/CustomElements/Plugins/Notelist/Variants.php',
 	'PCT\CustomElements\Plugins\Notelist\Formfield'		=> $path.'/PCT/CustomElements/Plugins/Notelist/Formfield.php',
 	'PCT\CustomElements\Plugins\Notelist\TableHelper'	=> $path.'/PCT/CustomElements/Plugins/Notelist/TableHelper.php',
-));
+);
+
+$loader = new \Composer\Autoload\ClassLoader();
+$loader->addClassMap($classMap);
+$loader->register();
 
 
 /**

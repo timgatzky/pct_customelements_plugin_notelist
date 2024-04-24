@@ -12,32 +12,22 @@
  * @license     LGPL
  */
 
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\System;
+
 /**
  * Constants
  */ 
-define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');
-define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','1.6.2');
-
-/**
- * Register plugin
- */
-$GLOBALS['PCT_CUSTOMELEMENTS']['PLUGINS']['notelist'] = array
-(
-	'tables' 	=> array('tl_pct_customelement','tl_pct_customelement_group','tl_pct_customelement_attribute'),
-	'requires'	=> array('pct_customelements'=>'1.2.6'),
-);
-
-
-/**
- * Stop here if CE Version is to low or notelist is not active
- */
-$blnInitialize = true;
-if( TL_MODE == 'BE' && \Contao\System::getContainer()->get('session')->getBag('contao_backend') )
+if( \defined('PCT_CUSTOMELEMENTS_NOTELIST_VERSION') === false )
 {
-	if(!in_array('notelist',\PCT\CustomElements\Core\PluginFactory::getActivePlugins()) && !in_array(\Contao\Input::get('do'), array('repository_manager','composer')) )
-	{
-		$blnInitialize = false;
-	}
+	define('PCT_CUSTOMELEMENTS_NOTELIST_VERSION','2.0.0');
+	define('PCT_CUSTOMELEMENTS_NOTELIST_PATH','system/modules/pct_customelements_plugin_notelist');	
+}
+
+if( version_compare(ContaoCoreBundle::getVersion(),'5.0','>=') )
+{
+	$rootDir = System::getContainer()->getParameter('kernel.project_dir');
+	include( $rootDir.'/system/modules/pct_customelements_plugin_notelist/config/autoload.php' );
 }
 
 /**
@@ -49,43 +39,41 @@ $GLOBALS['customelements_notelist']['formfieldLogic'] 	= 'customelement_notelist
 $GLOBALS['CUSTOMELEMENTS_NOTELIST']['sessionName'] 		= 'customelementnotelist';
 $GLOBALS['CUSTOMELEMENTS_NOTELIST']['clearSessionAfterSubmit'] = false; // set to true if you want to clear the submitted notelist after submitting
 
-if($blnInitialize === true)
-{
-	/**
-	 * Register attribute
-	 */
-	$GLOBALS['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'] = array
-	(
-		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'],
-		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
-		'class'		=> 'PCT\CustomElements\Attributes\Notelist',
-		'icon'		=> 'fa fa-check-square-o'
-	);
-	
-	/**
-	 * Register filter
-	 */
-	$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array
-	(
-		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'],
-		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
-		'class'		=> 'PCT\CustomElements\Filters\Notelist',
-		'icon'		=> 'fa fa-check-square'
-	);
-	
-	$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['history'] = array
-	(
-		'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['history'],
-		'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
-		'class'		=> 'PCT\CustomElements\Filters\History',
-		'icon'		=> 'fa fa-history'
-	);
-	
-	/**
-	 * Form fields
-	 */
-	$GLOBALS['TL_FFL']['customelements_notelist'] = 'PCT\CustomElements\Plugins\Notelist\Formfield';
-}
+
+/**
+ * Register attribute
+ */
+$GLOBALS['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'] = array
+(
+	'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['ATTRIBUTES']['notelist'],
+	'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
+	'class'		=> 'PCT\CustomElements\Attributes\Notelist',
+	'icon'		=> 'fa fa-check-square-o'
+);
+
+/**
+ * Register filter
+ */
+$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'] = array
+(
+	'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['notelist'],
+	'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
+	'class'		=> 'PCT\CustomElements\Filters\Notelist',
+	'icon'		=> 'fa fa-check-square'
+);
+
+$GLOBALS['PCT_CUSTOMELEMENTS']['FILTERS']['history'] = array
+(
+	'label'		=> &$GLOBALS['TL_LANG']['PCT_CUSTOMELEMENTS']['FILTERS']['history'],
+	'path' 		=> PCT_CUSTOMELEMENTS_NOTELIST_PATH,
+	'class'		=> 'PCT\CustomElements\Filters\History',
+	'icon'		=> 'fa fa-history'
+);
+
+/**
+ * Form fields
+ */
+$GLOBALS['TL_FFL']['customelements_notelist'] = 'PCT\CustomElements\Plugins\Notelist\Formfield';
 
 /**
  * Hooks

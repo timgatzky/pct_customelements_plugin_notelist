@@ -25,6 +25,7 @@ namespace PCT\CustomElements\Plugins\Notelist;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
+use PCT\CustomElements\Plugins\CustomCatalog\Core\Multilanguage;
 use \PCT\CustomElements\Plugins\Notelist\Hooks as Hooks;
 
 
@@ -84,7 +85,7 @@ class Notelist extends \Contao\Controller
 	public function setItem($varSource,$intItem,$intAmount=0,$arrVariants=array(),$blnReload=true,$arrEntry=array())
 	{
 		// get Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		$time = time();
@@ -122,7 +123,8 @@ class Notelist extends \Contao\Controller
 	public function getItem($varSource,$intItem)
 	{
 		// get Session
-		$arrSession = System::getContainer()->get('session')->get($this->strSession);
+		$objSession = System::getContainer()->get('request_stack')->getSession();
+		$arrSession = $objSession->get($this->strSession);
 		return $arrSession[$varSource][$intItem] ?? array();
 	}
 	
@@ -136,7 +138,7 @@ class Notelist extends \Contao\Controller
 	public function removeItem($varSource,$intItem,$blnReload=true)
 	{
 		// get Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		unset($arrSession[$varSource][$intItem]);
@@ -163,7 +165,7 @@ class Notelist extends \Contao\Controller
 	public function getNotelist($varSource=null)
 	{
 		// Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		
 		if( !isset($arrSession[$varSource]) || !is_array($arrSession[$varSource]) || empty($arrSession[$varSource]))
@@ -182,7 +184,7 @@ class Notelist extends \Contao\Controller
 	public function getNotelists()
 	{
 		// Session
-		$objSession = System::getContainer()->get('session');
+		$objSession = System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		if(!is_array($arrSession))
 		{
@@ -259,7 +261,7 @@ class Notelist extends \Contao\Controller
 						$strField = $element[3];
 						if( $objDatabase->fieldExists($strField,$element[2]) === false )
 						{
-							\Contao\System::log('Field '.$strField.' does not exist in table '.$element[2],__METHOD__,\TL_ERROR);
+							\Contao\System::getContainer()->get('monolog.logger.contao.error')->info('Field '.$strField.' does not exist in table '.$element[2]);
 							return '';
 						}
 						
@@ -304,7 +306,7 @@ class Notelist extends \Contao\Controller
 	{
 		$blnReload = $GLOBALS['customelements_notelist']['autoReloadPage'];
 		
-		$objSession = System::getContainer()->get('session');;
+		$objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 		
 		$strSource = $objConfig->source;
 		
@@ -319,7 +321,7 @@ class Notelist extends \Contao\Controller
 		
 		$strFormID = sprintf($GLOBALS['customelements_notelist']['formfieldLogic'],$strSource,$arrRow['id'],$objAttr->get('id'));
 		
-		$objTemplate->action = $this->replaceInsertTags('{{env::request}}');
+		$objTemplate->action = \Contao\Environment::get('request');
 		$objTemplate->formID = $strFormID;
 		$objTemplate->itemID = $arrRow['id'];
 		$objTemplate->source = $strSource;
@@ -337,11 +339,11 @@ class Notelist extends \Contao\Controller
 		$amount = $arrItem['amount'] ?? $GLOBALS['customelements_notelist']['default_amount'];
 		// create amount widget
 		$arrData=array('eval'=>array('rgxp' => 'digit', 'mandatory'=>true));
-		$objWidgetAmount = new \Contao\FormTextField($this->prepareForWidget($arrData, $strFormID.'_amount', $amount, $strFormID.'_amount'));	
+		$objWidgetAmount = new \Contao\TextField( \Contao\Widget::getAttributesFromDca($arrData, $strFormID.'_amount', $amount, $strFormID.'_amount') );	
 		$objWidgetAmount->min = 1;
 		$objWidgetAmount->max = 100000;
 		
-		$objTemplate->amountInput = $objWidgetAmount->generate();
+		$objTemplate->amountInput = \str_replace('type="text"', 'type="number"', $objWidgetAmount->generate() );
 		$objTemplate->amountLabel = sprintf('<label for="ctrl_%s">%s</label>',$objWidgetAmount->id,$GLOBALS['TL_LANG']['customelements_notelist']['amountLabel']);
 		
 		//-- variants
@@ -500,7 +502,7 @@ class Notelist extends \Contao\Controller
 	public function remove($strSource)
 	{
 		// Session
-		$objSession = System::getContainer()->get('session');;
+		$objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 		$arrSession = $objSession->get($this->strSession);
 		if(!is_array($arrSession[$strSource]))
 		{
@@ -554,15 +556,14 @@ class Notelist extends \Contao\Controller
 		$strLanguage = '';
 		if( $objCC->get('multilanguage') && ($objModel->customcatalog_filter_actLang || $objCC->get('aliasField') > 0) )
 		{
-			$objMultilanguage = new \PCT\CustomElements\Plugins\CustomCatalog\Core\Multilanguage;
-			$strLanguage = $objMultilanguage->getActiveFrontendLanguage();
+			$strLanguage = Multilanguage::getActiveFrontendLanguage();
 		}
 		
 		// render the regular details page of a customcatalog entry
 		$objEntry = $objCC->findPublishedItemByIdOrAlias(\Contao\Input::get($GLOBALS['PCT_CUSTOMCATALOG']['urlItemsParameter']),$strLanguage);
 		
 		$time = time();
-		$objSession = System::getContainer()->get('session');;
+		$objSession = $objSession = System::getContainer()->get('request_stack')->getSession();
 		
 		// get the current session
 		$arrSession = $objSession->get('customelementnotelist_history');
@@ -571,8 +572,10 @@ class Notelist extends \Contao\Controller
 			$arrSession = array();
 			$arrSession['createTime'] = $time;
 			$arrSession['tables'] = array();
+			$arrSession['lastTableVisited'] = '';
+			$arrSession['lastItemVisited'] = '';
 		}
-		
+
 		// check if user visited a new entry or remains on the last one visited
 		if($arrSession['lastTableVisited'] != $strTable || $arrSession['lastItemVisited'] != $objEntry->id)
 		{

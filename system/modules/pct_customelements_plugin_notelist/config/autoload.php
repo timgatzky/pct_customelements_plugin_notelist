@@ -40,7 +40,7 @@ $loader->register();
  */
 \Contao\TemplateLoader::addFiles(array
 (
-	'form_notelist_customelements'				=> $path.'/templates',
-	'mail_notelist_customelements'				=> $path.'/templates',
-	'customelement_attr_notelist'				=> $path.'/templates',
+	'form_notelist_customelements'				=> 'system/modules/pct_customelements_plugin_notelist/templates',
+	'mail_notelist_customelements'				=> 'system/modules/pct_customelements_plugin_notelist/templates',
+	'customelement_attr_notelist'				=> 'system/modules/pct_customelements_plugin_notelist/templates',
 ));
